@@ -1,0 +1,112 @@
+﻿@{
+    ViewData["Title"] = "Авторизация";
+}
+
+
+    <div class="auth-container" id="loginBox">
+        <div class="container auth-box">
+            <div class="row justify-content-center">
+                <header class="section-header">
+                    <h3>Авторизация</h3>
+                </header>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 form">
+                    <div id="errors" class="alert alert-danger" style="display:none;"></div>
+                    <form>
+                        <label for="exampleInputEmail1">Логин</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите e-mail" required>
+
+                        <label for="exampleInputPassword1">Пароль</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Введите пароль" required>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label text-left" for="exampleCheck1">Запомнить</label>
+                        </div>
+
+                        <div class="form-row align-items-center">
+                            <button id="btnLogin" type="submit" class="btn btn-primary">Войти</button>
+                            <br />
+                            <div class="col-auto">
+                                <a class="fa-link text-info" id="hideLogin">Нет аккаунта? Зарегестрируйтесь!</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 wow fadeInUp order-1 offset-lg-1 order-lg-2">
+                    <img src="~/img/container/optovaya_torgovlya_tovarami_v_donecke_dnr_luganske_lnr_donbasse_0.jpg" class="img-fluid" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- =======================================Register=================================== -->
+            <div class="auth-container" id="registerBox">
+                <div class="container auth-box">
+                    <div class="row justify-content-xl-center">
+                        <header class="section-header">
+                            <h3>Регистрация</h3>
+                        </header>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 form">
+                            <div id="errorsRegister" class="alert alert-danger" style="display:none;"></div>
+                            <form>
+                                <br />
+                                <!--<label for="exampleInputEmail2">Email</label>-->
+                                <div>
+                                    <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Введите е-mail" required>
+                                    <small id="emailHelp" class="form-text text-muted">Мы никому не сообщим Ваш почтовый адрес.</small>
+                                </div>
+                                <div>
+                                    <!--<label for="exampleInputFirstName1">Имя</label>-->
+                                    <input id="inputFirstName" placeholder="Имя" class="form-control" type="text" autocomplete="off" required />
+                                </div>
+                                <br />
+                                <div>
+                                    <!--<label for="exampleInputLastName1">Фамилия</label>-->
+                                    <input id="inputLastName" placeholder="Фамилия" class="form-control" type="text" autocomplete="off" required />
+                                </div>
+                                <br />
+                                <!--<label for="exampleInputPassword2">Пароль</label>-->
+                                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Пароль" required>
+
+                                <br />
+                                <div>
+                                    <!--<label for="exampleInputConfirmPassword2">Подтвердить пароль</label>-->
+                                    <input id="exampleInputConfirmPassword1" placeholder="Подтвердить пароль" class="form-control" type="password" autocomplete="off" required />
+
+                                </div>
+                                <br />
+                                <div align="left">
+                                    <!--<label for="inputGroupSelect01">Ваша роль</label>-->
+                                    <select class="custom-select" id="inputGroupRoleSelect01" name="RoleName">
+                                        <option selected>Выберите роль</option>
+                                        <option value="admin">Администратор</option>
+                                        <option value="user">Клиент</option>
+                                        <option value="driver">Водитель</option>
+                                    </select>
+                                </div>
+                                <br />
+
+                                <div class="form-row align-items-center">
+                                    <button type="submit" id="btnRegister" class="btn btn-primary">Зарегистрироваться</button>
+                                    <br />
+                                    <div class="col-auto">
+                                        <a class="fa-link text-info" id="hideRegister">Есть аккаунт? Выполните вход.</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6 wow fadeInUp order-1 offset-lg-1 order-lg-2">
+                            <img src="~/img/container/optovaya_torgovlya_tovarami_v_donecke_dnr_luganske_lnr_donbasse_0.jpg" class="img-fluid" alt="">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- =======================================The end=================================== -->
+        

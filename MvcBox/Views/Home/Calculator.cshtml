@@ -1,0 +1,333 @@
+﻿@{
+    ViewData["Title"] = "Калькулятор";
+}
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/pages/CalculatorPage.js"></script>
+
+<!-- =======================================Calculator=================================== -->
+
+<div class="auth-container" id="calculatorBox">
+    <div class="container auth-box">
+        <div id="errorsPrice" class="alert alert-danger" style="display:none;"></div>
+        <div id="errorsOrder" class="alert alert-danger" style="display:none;"></div>
+        <div class="row text-center">
+            <header class="section-header2">
+                <h3>Калькулятор</h3>
+            </header>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7 form">
+                <form id="form1" class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="inputFromCity">Откуда: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Адрес отправки. Пример: г.Новочеркасск, ул.Осенний тупик, дом 10" class="img-fluid" alt="">
+                            </div>
+                            <input type="text" class="form-control" id="inputFromCity" required>
+                            <div class="invalid-feedback">
+                                Выберите адрес отправки.
+                            </div>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="inputToCity">Куда: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Адрес доставки. Пример: г.Новочеркасск, ул.Троицкая, дом 88" class="img-fluid" alt="">
+                            </div>
+                            <input type="text" class="form-control" id="inputToCity" required>
+                            <div class="invalid-feedback">
+                                Выберите адрес доставки.
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="inputTime">Время отгрузки (желаемое) </label>
+
+                            </div>
+                            <input type="time" class="form-control" id="inputTime" required>
+                            <div class="invalid-feedback">
+                                Выберите время.
+                            </div>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="inputDate">Дата отгрузки: </label>
+
+                            </div>
+                            <input type="date" class="form-control" id="inputDate" min="2019-01-01" max="2100-01-01" required>
+                            <div class="invalid-feedback">
+                                Выберите дату.
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-inline section-header3">
+                        <h3>Параметры груза </h3>
+                    </div>
+                    <br />
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="align-items-center">
+                                <label for="inputLength">Длина: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Максимальная длина составляет 18,80 метров" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="inputLength" placeholder="0.00" min="0" max="18.80" step="0.01" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">м</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="align-items-center">
+                                <label for="inputWidth">Ширина: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Максимальная ширина составляет 25,90 метров" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="inputWidth" placeholder="0.00" min="0" max="25.90" step="0.01" required />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">м</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="align-items-center">
+                                <label for="inputHeight">Высота: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Максимальная высота составляет 22,00 метров" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="inputHeight" placeholder="0.00" min="0" max="22.00" step="0.01" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">м</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="align-items-center">
+                                <label for="inputVolume">Объём: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Максимальный объём составляет 10712.20 м³" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="inputVolume" placeholder="0.00" min="0" max="10712.20" step="0.01" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">м³</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="align-items-center">
+                                <label for="inputWeight">Вес: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Максимальный вес груза составляет 5000 кг" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="InputWeight" placeholder="0.00" min="0" max="5000" step="0.01" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">кг</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="InputCountPlaces">Кол-во таких мест: </label>
+                            <input type="number" class="form-control" id="InputCountPlaces" min="0" required>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <div class="align-items-center">
+                                <label for="CustomSelectCargo">Характер груза: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Тариф выполнения единицы транспортной работы в зависимости от типа груза" class="img-fluid" alt="">
+                            </div>
+                            <select class="custom-select" id="CustomSelectCargo" name="TypeOfCargo" required>
+                                <option value="">Выбор</option>
+                                <option value="Тарно-штучные">Тарно-штучные</option>
+                                <option value="Жидкие">Жидкие</option>
+                                <option value="Насыпные">Насыпные</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Выберите характер груза.
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <div class="align-items-center">
+                                <label for="CustomSelectDangerClass">Класс опасности: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="right" title="Повышающий тарифный коэффициент в зависимости от класса опасности" class="img-fluid" alt="">
+                            </div>
+                            <select class="custom-select" id="CustomSelectDangerClass" name="DangerClass" required>
+                                <option value="">Выбор</option>
+                                <option value="0_класс">0 класс - неопасный груз</option>
+                                <option value="1_класс">1 класс - взрывчатые материалы и предметы</option>
+                                <option value="2_класс">2 класс - сжатые, сжиженные и растворённые под давлением газы</option>
+                                <option value="3_класс">3 класс - легко воспламеняющиеся жидкости</option>
+                                <option value="4.1_класс">4.1 класс - легко воспламеняющиеся твёрдые вещества</option>
+                                <option value="4.2_класс">4.2 класс - самовозгорающиеся вещества</option>
+                                <option value="4.3_класс">4.3 класс - вещества, выделяющие воспламеняющиеся газы при соприкосновении с водой</option>
+                                <option value="5.1_класс">5.1 класс - окисляющие вещества</option>
+                                <option value="5.2_класс">5.2 класс - органические пероксиды</option>
+                                <option value="6.1_класс">6.1 класс - ядовитые вещества</option>
+                                <option value="6.2_класс">6.2 класс - побочные продукты переработки животных и инфекционные вещества</option>
+                                <option value="7_класс">7 класс - радиоактивные материалы</option>
+                                <option value="8_класс">8 класс - коррозирующие вещества</option>
+                                <option value="9_класс">9 класс - прочие опасные вещества</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Выберите класс опасности.
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="form-check">
+                        <div class="align-items-center">
+                            <img src="~/img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Укажите объявленную стоимость груза для расчета суммы страхования. Услуга «Страхование груза» позволяет компенсировать убытки, связанные с повреждением или утратой груза при наступлении страхового случая." class="img-fluid" alt="">
+                            <label class="form-check-label" for="exampleCheck2">
+                                Страхование груза:
+                                <input type="checkbox" id="exampleCheck2" checked />
+                                <span class="default"></span>
+                            </label>
+                            <!--<label class="form-check-label" for="exampleCheck2">Страхование груза: </label>-->
+                        </div>
+                        <!--<input type="checkbox" class="form-check-input" id="exampleCheck2">-->
+                    </div>
+                    <hr />
+                    <br />
+
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="InputValueCarge">Объявленная ценность груза: </label>
+                                <img src="~/img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Cтраховая премия составляет 0,0012-0,0015 или 0,12-0,15% от объявленной ценности груза, и может быть фиксированной для данного перевозчика на все перевозки" class="img-fluid" alt="">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="InputValueCarge" min="0" required>
+
+                                <div class="input-group-append">
+                                    <span class="input-group-text">руб</span>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Введите ценность груза.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <div class="align-items-center">
+                                <label for="CustomSelectShipLoad">Способы погрузки: </label>
+                                <img src="~/img/container/ваыпвап.jpg" class="img-fluid" alt="">
+                            </div>
+                            <select class="custom-select" id="CustomSelectShipLoad" name="TypeOfShipLoad" required>
+                                <option value="">Выбор</option>
+                                <option value="1">Ручной способ</option>
+                                <option value="2">Механизированный способ</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Выберите способ перевозки.
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <button id="btnToApply" type="submit" class="btn btn-primary">Оформить заявку</button>
+                    <br />
+                </form>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card border-info mb-3 shadow rounded text-center card-result-box" align ="center" style="max-width: 18rem;">
+                    <div class="card-header"><h4>Расчёт стоимости:</h4></div>
+                    <div class="card-body text-info section-header-default">
+                        <h5 class="card-title">Стоимость заказа</h5>
+                        <br />
+                        <div class="col-md-9" id="position01">
+                            <input type="number" class="form-control new-input" id="OutputResult" readonly>
+                        </div>
+                        <br />
+                        <p class="card-text">*Указана ориентировачная стоимость в рублях</p>
+                        <br />
+                        <button id="btnSubmitValue" type="submit" class="btn btn-primary">Рассчитать стоимость</button>
+                    </div>
+                </div>
+
+                <div style="display: none">
+                    <input id="outputTotal"
+                           class="controls"
+                           type="text"
+                           placeholder="Длина пути" readonly>
+                </div>
+
+               
+                <div id="mapDistance" align="center">
+
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        initMap();
+                    });
+                </script>
+            </div>
+
+            </div>
+            </div>
+
+            <!-- =========Section Card=========== -->
+            @*<div class="container card-result-box">
+                <div class="card border-info mb-3 shadow rounded text-center" style="max-width: 18rem;">
+                    <div class="card-header"><h4>Расчёт стоимости:</h4></div>
+                    <div class="card-body text-info section-header-default">
+                        <h5 class="card-title">Стоимость заказа</h5>
+                        <br />
+                        <div class="col-md-9" id="position01">
+                            <input type="number" class="form-control new-input" id="OutputResult" readonly>
+                        </div>
+                        <br />
+                        <p class="card-text">*Указана ориентировачная стоимость в рублях</p>
+                        <br />
+                        <button id="btnSubmitValue" type="submit" class="btn btn-primary">Рассчитать стоимость</button>
+                    </div>
+                </div>
+
+                <div style="display: none">
+                    <input id="outputTotal"
+                           class="controls"
+                           type="text"
+                           placeholder="Длина пути" readonly>
+                </div>
+
+                <div id="mapDistance">
+
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        initMap();
+                    });
+                </script>
+            </div>*@
+
+
+
+
+
+        </div>
+        <!-- =======================================End=================================== -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC56KdWPAs6stFdkXRC1xE0Es4hKmUaVoE&libraries=places&callback=initMap"></script>
+

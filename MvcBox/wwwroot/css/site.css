@@ -1,0 +1,547 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+
+
+/* Provide sufficient contrast against white background */
+/*a {
+  color: #0366d6;
+}*/
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/*--------------------------------------------------*/ 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+
+/* регистрация / авториация*/
+.auth-container {
+    height: 60em;
+    position: relative;
+}
+
+.auth-box {
+    position: absolute;
+    margin-top: 20px;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
+}
+
+.card-result-box {
+    
+    margin-top: 30px;
+    margin-left: 80px;
+}
+
+#mapDistance {
+    
+    height: 300px;
+    /*margin-left: -130px;*/
+    margin-top: 30px;
+    background-color: grey;
+}
+
+#errorsPrice {
+    width: 50%;
+}
+
+#errorsOrder {
+    width: 50%;
+}
+
+
+#position01 {
+    margin-left: 28px;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.calculator-box {
+    position: absolute;
+    
+    left: 50%;
+    margin-right: -50%;
+    
+}
+
+.auth-box-btn {
+    margin-top: 10px;
+}
+
+.section-header2 h3 {
+    font-size: 30px;
+    color: #283d50;
+    margin-left: 10px;
+    font-weight: 500;
+    position: relative;
+}
+
+.section-header3 h3 {
+    font-size: 28px;
+    color: #283d50;
+}
+
+.section-header h3 {
+    font-size: 36px;
+    color: #283d50;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+}
+
+.section-header-default h5 {
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+    clear: both;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.controls {
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    height: 29px;
+    margin-left: 17px;
+    margin-top: 10px;
+    outline: none;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 170px;
+}
+
+    .controls:focus {
+        border-color: #4d90fe;
+    }
+
+.title {
+    font-weight: bold;
+}
+
+#infowindow-content {
+    display: none;
+}
+
+#mapDistance #infowindow-content {
+    display: inline;
+}
+/* Sticky navigation styles
+-------------------------------------------------- */
+/*ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+a,
+a:active,
+a:focus,
+a:active {
+    text-decoration: none !important;
+}
+/* ==================
+ *
+ *  Global Class 
+ *
+ *===================*/
+.btn {
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 7px 20px;
+    border-radius: 0;
+}
+
+/*.nav > li > a:hover,
+.nav > li > a:focus {
+    background: transparent;
+}*/
+
+/*.title {
+    text-align: center;
+    padding-bottom: 70px;
+}
+.title h2 {
+    color: #333;
+    font-size: 25px;
+    padding-bottom: 25px;
+    text-transform: uppercase;
+    display: inline-block;
+    position: relative;
+}
+
+.title h2:before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: #80d6a3;
+    position: absolute;
+    top: 12px;
+    left: -60px;
+}
+
+.title h2:after {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: #80d6a3;
+    position: absolute;
+    top: 12px;
+    right: -60px;
+}
+
+.title p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 300;
+    color: #817C7C;
+}
+
+#mixed-items .mix {
+    display: none;
+}
+/* animation keyfrem */
+/*@-webkit-keyframes wiggle {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: 20px;
+    }
+}
+
+@-moz-keyframes wiggle {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: 20px;
+    }
+}
+
+@-o-keyframes wiggle {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: 20px;
+    }
+}
+
+@keyframes wiggle {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: 20px;
+    }
+}*/
+/* ==================
+ *
+ *  section Class 
+ *
+ *===================*/
+/* header style */
+/*header {
+    padding: 5px 0;-15
+    background: #fff;
+}
+
+header .navbar {
+    height: auto;
+    margin-bottom: 0;
+}
+
+.is-sticky #navigation {
+    background: #fff;
+    z-index: 1000;
+    transition: 0.3s;
+    width: 100%;
+    padding: 0;
+}
+
+.navbar-brand {
+    padding: 0;
+    height: auto;
+}
+
+.navbar-toggle {
+    border-color: #333;
+    transition: 0.3s;
+}
+
+.navbar-toggle .icon-bar {
+    background: #333;
+    transition: 0.3s;
+}
+
+.navbar-toggle:hover {
+    border-color: #80d6a3;
+}
+
+.navbar-toggle:hover .icon-bar {
+    background: #80d6a3;
+}
+
+.menu a {
+    color: #333;
+    transition: 0.3s;
+    position: relative;
+    font-size: 16px;
+}
+
+.menu a:before {
+   content: "";
+   position: absolute;
+   left: 10px;-6
+   bottom: 6px;-6
+   width: 0;
+   height: 1px;
+   background: #80d6a3;
+   transition: 0.3s;
+}
+
+.menu a:hover {
+   background: transparent;
+   color: #80d6a3;
+}*/
+
+.login-box-msg, .register-box-msg {
+    margin: 0px;
+    text-align: center;
+    padding: 0px 20px 20px;
+}
+
+/*.menu .active a {
+    color: #80d6a3;
+}
+
+.menu .active a:before {
+    width: 15px; /*-10*/
+/*}
+
+.menu a:hover:before {
+    width: 25px;
+}*/
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    background-color: grey;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    /*background: url(~/img/back.jpg);*/
+    /*background-color: ivory;*/
+}
+
+/*.footer {
+    background: #2E3192;
+    color: white;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}*/
+    /*Styles for footer*/
+
+
+.bg-violett {
+    background-color: #2E3192;
+}
+
+.navbar{
+    padding: 10px;
+    font-size: 20px;
+}
+
+.carousel-caption{
+    margin-bottom: 50px;
+    width: auto;
+    height: auto;
+}
+
+.carousel-indicators {
+    padding: 10px;
+    border-color: white;
+}
+    .carousel-inner img {
+    height: auto !important;
+    margin: 0 auto;
+    padding:5px;
+    box-shadow: inset 0px 0px 30px 30px rgba(0,0,0,0.9);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: auto;
+}
+
+
+
+
+.jumbotron{
+    margin-bottom: 0px;
+}
+#banner {
+    
+    padding: 0px 0;
+    position: relative;
+    
+}
+
+.btn-min-block {
+    min-width: 170px;
+    line-height: 26px;
+}
+
+.btn-clear {
+    color: #FFF;
+    background-color: transparent;
+    border-color: #FFF;
+    margin-right: 15px;
+}
+.main-text {
+    position: absolute;
+    top: 50px;
+    width: 96.66666666666666%;
+    color: #FFF;
+}
+    .btn-clear:hover {
+        color: #000;
+        background-color: #FFF;
+    }
+
+.carousel-caption {
+   
+    font-size: 30px;
+}
+
+.navbar-brand {
+    font-size: 40px;
+    font-family: Fudd;
+}
+
+
+.footer {
+    background: #2E3192;
+    color: white;
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    .links
+
+{
+    ul
+
+{
+    list-style-type: none;
+}
+
+li a {
+    color: white;
+    transition: color .2s;
+    &:hover
+
+{
+    text-decoration: none;
+    color: #4180CB;
+}
+
+}
+}
+
+.about-company {
+    i
+
+{
+    font-size: 25px;
+}
+
+a {
+    color: white;
+    transition: color.2s;
+    &:hover
+
+{
+    color: #4180CB
+}
+
+}
+}
+
+.location {
+    i
+
+{
+    font-size: 18px;
+}
+
+}
+
+.copyright p {
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+}

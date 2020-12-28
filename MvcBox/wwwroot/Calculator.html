@@ -1,0 +1,382 @@
+﻿<!DOCTYPE html>
+<html class="nojs html css_verticalspacer" lang="ru-RU">
+<head>
+
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta name="generator" content="2018.1.0.386" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="text/javascript">
+        // Update the 'nojs'/'js' class on the html node
+        document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
+
+        // Check that all required assets are uploaded and up-to-date
+        if (typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = { "required": ["museutils.js", "museconfig.js", "jquery.watch.js", "jquery.museresponsive.js", "require.js", "webpro.js", "musewpslideshow.js", "jquery.museoverlay.js", "touchswipe.js", "___________.css"], "outOfDate": [] };
+    </script>
+
+    <title>Калькулятор</title>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/container/site_global.css?crc=444006867" />
+    <link rel="stylesheet" type="text/css" href="css/container/___________.css?crc=4161016058" id="pagesheet" />
+    <!-- IE-only CSS -->
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/nomq____________.css?crc=17848710" id="nomq_pagesheet"/>
+    <![endif]-->
+    <!-- Other scripts -->
+    <script src="lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="js/pages/CalculatorPage.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var __adobewebfontsappname__ = "muse";
+    </script>
+    <!-- JS includes -->
+    <script src="https://webfonts.creativecloud.com/black-ops-one:n4:all.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="breakpoint active" id="bp_infinity" data-min-width="1025">
+        <!-- responsive breakpoint node -->
+        <div class="clearfix borderbox" id="page">
+            <!-- column -->
+            <div class="position_content" id="page_position_content">
+                <div class="browser_width colelem" id="u6588-bw">
+                    <div class="shadow" id="u6588">
+                        <!-- group -->
+                        <div class="clearfix" id="u6588_align_to_page">
+                            <div class="clearfix grpelem shared_content" id="pu6589-4" data-content-guid="pu6589-4_content">
+                                <!-- group -->
+                                <div class="clearfix grpelem" id="u6589-4">
+                                    <!-- content -->
+                                    <p>SmartBox</p>
+                                </div>
+                                <div class="clearfix grpelem" id="u6597-4">
+                                    <!-- content -->
+                                    <p>Контейнер-трансформер</p>
+                                </div>
+                            </div>
+                            <a class="nonblock nontext clearfix grpelem shared_content" id="u6592-4" href="https://localhost:44396/" target="_blank" data-content-guid="u6592-4_content"><!-- content --><p id="u6592-2">Главная</p></a>
+                            <div class="clearfix grpelem shared_content" id="u6594-4" data-content-guid="u6594-4_content">
+                                <!-- content -->
+                                <p id="u6594-2">Отзывы</p>
+                            </div>
+                            <div class="clearfix grpelem shared_content" id="u6595-4" data-content-guid="u6595-4_content">
+                                <!-- content -->
+                                <p id="u6595-2">О нас</p>
+                            </div>
+                            <div class="clearfix grpelem shared_content" id="u6598-4" data-content-guid="u6598-4_content">
+                                <!-- content -->
+                                <p id="u6598-2">Контакты</p>
+                            </div>
+                            <div class="clearfix grpelem shared_content" id="u6596-4" data-content-guid="u6596-4_content">
+                                <!-- content -->
+                                <p id="u6596-2">Отследить заказ</p>
+                            </div>
+                            <div class="clearfix grpelem shared_content" id="u6590-8" data-content-guid="u6590-8_content">
+                                <!-- content -->
+                                <p id="u6590-2">ТЕЛ. +7 863 522 20 53</p>
+                                <p>Звонок со всех регионов РФ бесплатный</p>
+                                <p>email:&nbsp; smartbox@mail.ru</p>
+                            </div>
+                            <div class="clearfix grpelem shared_content" id="u6591-4" data-content-guid="u6591-4_content">
+                                <!-- content -->
+                                <a href="Auth.html"><span id="u6591">Личный кабинет</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- =======================================Calculator=================================== -->
+
+                <div class="auth-container" id="calculatorBox">
+                    <div class="container auth-box">
+                        <div id="errorsPrice" class="alert alert-danger" style="display:none;"></div>
+                        <div class="row justify-content-lg-start">
+                            <header class="section-header2">
+                                <h3>Калькулятор</h3>
+                            </header>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="inputFromCity">Откуда: </label>
+                                    <img src="img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Адрес отправки. Пример: г.Новочеркасск, ул.Осенний тупик, дом 10" class="img-fluid" alt="">
+                                </div>
+                                <input type="text" class="form-control" id="inputFromCity" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="inputToCity">Куда: </label>
+                                    <img src="img/container/ваыпвап.jpg" data-placement="top" data-toggle="tooltip" title="Адрес доставки. Пример: г.Новочеркасск, ул.Троицкая, дом 88" class="img-fluid" alt="">
+                                </div>
+                                <input type="text" class="form-control" id="inputToCity" required>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="inputTime">Время отгрузки (желаемое) </label>
+
+                                </div>
+                                <input type="time" class="form-control" id="inputTime" required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="inputDate">Дата отгрузки: </label>
+
+                                </div>
+                                <input type="date" class="form-control" id="inputDate" required>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="form-inline section-header3">
+                            <h3>Параметры груза </h3>
+                        </div>
+                        <br />
+
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <label for="inputLength">Длина: </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="inputLength" placeholder="0.00" min="0" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">м</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputWidth">Ширина: </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="inputWidth" placeholder="0.00" min="0" required />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">м</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputHeight">Высота: </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="inputHeight" placeholder="0.00" min="0" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">м</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <label for="inputVolume">Объём: </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="inputVolume" placeholder="0.00" min="0" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">м³</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="InputWeight">Вес груза: </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="InputWeight" placeholder="0.00" min="0" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">кг</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="InputCountPlaces">Кол-во таких мест: </label>
+                                <input type="number" class="form-control" id="InputCountPlaces" min="0" required>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="CustomSelectCargo">Характер груза: </label>
+                                    <img src="img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Тариф выполнения единицы транспортной работы в зависимости от типа груза" class="img-fluid" alt="">
+                                </div>
+                                <select class="custom-select" id="CustomSelectCargo" name="TypeOfCargo">
+                                    <option selected>Выбор</option>
+                                    <option value="Тарно-штучные">Тарно-штучные</option>
+                                    <option value="Жидкие">Жидкие</option>
+                                    <option value="Насыпные">Насыпные</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="CustomSelectDangerClass">Класс опасности: </label>
+                                    <img src="img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="right" title="Повышающий тарифный коэффициент в зависимости от класса опасности" class="img-fluid" alt="">
+                                </div>
+                                <select class="custom-select" id="CustomSelectDangerClass" name="DangerClass">
+                                    <option selected>Выбор</option>
+                                    <option value="1_класс">1 класс - взрывчатые материалы и предметы</option>
+                                    <option value="2_класс">2 класс - сжатые, сжиженные и растворённые под давлением газы</option>
+                                    <option value="3_класс">3 класс - легко воспламеняющиеся жидкости</option>
+                                    <option value="4.1_класс">4.1 класс - легко воспламеняющиеся твёрдые вещества</option>
+                                    <option value="4.2_класс">4.2 класс - самовозгорающиеся вещества</option>
+                                    <option value="4.3_класс">4.3 класс - вещества, выделяющие воспламеняющиеся газы при соприкосновении с водой</option>
+                                    <option value="5.1_класс">5.1 класс - окисляющие вещества</option>
+                                    <option value="5.2_класс">5.2 класс - органические пероксиды</option>
+                                    <option value="6.1_класс">6.1 класс - ядовитые вещества</option>
+                                    <option value="6.2_класс">6.2 класс - побочные продукты переработки животных и инфекционные вещества</option>
+                                    <option value="7_класс">7 класс - радиоактивные материалы</option>
+                                    <option value="8_класс">8 класс - коррозирующие вещества</option>
+                                    <option value="9_класс">9 класс - прочие опасные вещества</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- =========Section Card=========== -->
+                    <div class="container card-result-box">
+                        <div class="card border-info mb-3 shadow rounded text-center" style="max-width: 18rem;">
+                            <div class="card-header"><h4>Расчёт стоимости:</h4></div>
+                            <div class="card-body text-info section-header-default">
+                                <h5 class="card-title">Стоимость заказа</h5>
+                                <br />
+                                <div class="col-md-9" id="position01">
+                                    <input type="number" class="form-control new-input" id="OutputResult" readonly>
+                                </div>
+                                <br />
+                                <p class="card-text">*Указана ориентировачная стоимость в рублях</p>
+                                <br />
+                                <button id="btnSubmitValue" type="submit" class="btn btn-primary">Рассчитать стоимость</button>
+                            </div>
+                        </div>
+
+                        <div style="display: none">
+                            <input id="outputTotal"
+                                   class="controls"
+                                   type="text"
+                                   placeholder="Длина пути" readonly>
+                        </div>
+
+                        <div id="mapDistance">
+
+                        </div>
+
+                        <script>
+                            $(document).ready(function () {
+                                initMap();
+                            });
+                        </script>
+                    </div>
+
+                    <div class="container calculator-box">
+                        <div class="form-check">
+                            <div class="align-items-center">
+                                <img src="img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Страховой коэффициент применяется, если ставится галочка в пункте «Страхование груза»." class="img-fluid" alt="">
+                                <label class="form-check-label" for="exampleCheck2">
+                                    Страхование груза:
+                                    <input type="checkbox" id="exampleCheck2" checked/>
+                                    <span class="default"></span>
+                                </label>
+                                <!--<label class="form-check-label" for="exampleCheck2">Страхование груза: </label>-->
+                            </div>
+                            <!--<input type="checkbox" class="form-check-input" id="exampleCheck2">-->
+                        </div>
+                        <hr />
+                        <br />
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="InputValueCarge">Объявленная ценность груза: </label>
+                                    <img src="img/container/ваыпвап.jpg" data-toggle="tooltip" data-placement="top" title="Cтраховая премия составляет 0,0012-0,0015 или 0,12-0,15% от объявленной ценности груза, и может быть фиксированной для данного перевозчика на все перевозки" class="img-fluid" alt="">
+                                </div>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="InputValueCarge" min="0" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">руб</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <div class="align-items-center">
+                                    <label for="CustomSelectShipLoad">Способы погрузки: </label>
+                                    <img src="img/container/ваыпвап.jpg" class="img-fluid" alt="">
+                                </div>
+                                <select class="custom-select" id="CustomSelectShipLoad" name="TypeOfShipLoad" required>
+                                    <option selected>Выбор</option>
+                                    <option value="1">Ручной способ</option>
+                                    <option value="2">Механизированный способ</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <br />
+                        <button id="btnToApply" type="submit" class="btn btn-primary">Оформить заявку</button>
+                        <br />
+                    </div>
+
+
+
+                </div>
+                <!-- =======================================End=================================== -->
+
+            </div>
+        </div>
+    </div>
+    <!-- Other scripts -->
+    <script type="text/javascript">
+        // Decide whether to suppress missing file error or not based on preference setting
+        var suppressMissingFileError = false
+    </script>
+    <script type="text/javascript">
+        window.Muse.assets.check = function (c) {
+            if (!window.Muse.assets.checked) {
+                window.Muse.assets.checked = !0; var b = {}, d = function (a, b) { if (window.getComputedStyle) { var c = window.getComputedStyle(a, null); return c && c.getPropertyValue(b) || c && c[b] || "" } if (document.documentElement.currentStyle) return (c = a.currentStyle) && c[b] || a.style && a.style[b] || ""; return "" }, a = function (a) {
+                    if (a.match(/^rgb/)) return a = a.replace(/\s+/g, "").match(/([\d\,]+)/gi)[0].split(","), (parseInt(a[0]) << 16) + (parseInt(a[1]) << 8) + parseInt(a[2]); if (a.match(/^\#/)) return parseInt(a.substr(1),
+                        16); return 0
+                }, f = function (f) {
+                    for (var g = document.getElementsByTagName("link"), j = 0; j < g.length; j++)if ("text/css" == g[j].type) { var l = (g[j].href || "").match(/\/?css\/([\w\-]+\.css)\?crc=(\d+)/); if (!l || !l[1] || !l[2]) break; b[l[1]] = l[2] } g = document.createElement("div"); g.className = "version"; g.style.cssText = "display:none; width:1px; height:1px;"; document.getElementsByTagName("body")[0].appendChild(g); for (j = 0; j < Muse.assets.required.length;) {
+                        var l = Muse.assets.required[j], k = l.match(/([\w\-\.]+)\.(\w+)$/), i = k && k[1] ?
+                            k[1] : null, k = k && k[2] ? k[2] : null; switch (k.toLowerCase()) { case "css": i = i.replace(/\W/gi, "_").replace(/^([^a-z])/gi, "_$1"); g.className += " " + i; i = a(d(g, "color")); k = a(d(g, "backgroundColor")); i != 0 || k != 0 ? (Muse.assets.required.splice(j, 1), "undefined" != typeof b[l] && (i != b[l] >>> 24 || k != (b[l] & 16777215)) && Muse.assets.outOfDate.push(l)) : j++; g.className = "version"; break; case "js": j++; break; default: throw Error("Unsupported file type: " + k); }
+                    } c ? c().jquery != "1.8.3" && Muse.assets.outOfDate.push("jquery-1.8.3.min.js") : Muse.assets.required.push("jquery-1.8.3.min.js");
+                    g.parentNode.removeChild(g); if (Muse.assets.outOfDate.length || Muse.assets.required.length) g = "Некоторые файлы на сервере могут отсутствовать или быть некорректными. Очистите кэш-память браузера и повторите попытку. Если проблему не удается устранить, свяжитесь с разработчиками сайта.", f && Muse.assets.outOfDate.length && (g += "\nOut of date: " + Muse.assets.outOfDate.join(",")), f && Muse.assets.required.length && (g += "\nMissing: " + Muse.assets.required.join(",")), suppressMissingFileError ? (g += "\nUse SuppressMissingFileError key in AppPrefs.xml to show missing file error pop up.", console.log(g)) : alert(g)
+                }; location && location.search && location.search.match && location.search.match(/muse_debug/gi) ?
+                    setTimeout(function () { f(!0) }, 5E3) : f()
+            }
+        };
+        var muse_init = function () {
+            require.config({ baseUrl: "" }); require(["jquery", "museutils", "whatinput", "jquery.watch", "webpro", "musewpslideshow", "jquery.museoverlay", "touchswipe", "jquery.museresponsive"], function (c) {
+                var $ = c; $(document).ready(function () {
+                    try {
+                        window.Muse.assets.check($);/* body */
+                        Muse.Utils.transformMarkupToFixBrowserProblemsPreInit();/* body */
+                        Muse.Utils.prepHyperlinks(true);/* body */
+                        Muse.Utils.resizeHeight('.browser_width');/* resize height */
+                        Muse.Utils.requestAnimationFrame(function () { $('body').addClass('initialized'); });/* mark body as initialized */
+                        Muse.Utils.resizeHeight('.popup_anchor.allow_click_through');/* resize height */
+                        Muse.Utils.makeButtonsVisibleAfterSettingMinWidth();/* body */
+                        Muse.Utils.initWidget('#pamphletu2775', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu2775 */
+                        Muse.Utils.initWidget('#pamphletu2987', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu2987 */
+                        Muse.Utils.initWidget('#pamphletu3194', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu3194 */
+                        Muse.Utils.initWidget('#pamphletu3251', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu3251 */
+                        Muse.Utils.initWidget('#pamphletu3308', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu3308 */
+                        Muse.Utils.initWidget('#pamphletu3365', ['#bp_infinity', '#bp_1024'], function (elem) { return new WebPro.Widget.ContentSlideShow(elem, { contentLayout_runtime: 'loose', event: 'mouseover', deactivationEvent: 'mouseout_both', autoPlay: false, displayInterval: 3000, transitionStyle: 'fading', transitionDuration: 500, hideAllContentsFirst: true, triggersOnTop: true, shuffle: false, enableSwipe: true, resumeAutoplay: true, resumeAutoplayInterval: 3000, playOnce: false, autoActivate_runtime: false, isResponsive: true }); });/* #pamphletu3365 */
+                        Muse.Utils.fullPage('#page');/* 100% height page */
+                        $('.breakpoint').registerBreakpoint();/* Register breakpoints */
+                        Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
+                    } catch (b) { if (b && "function" == typeof b.notify ? b.notify() : Muse.Assert.fail("Error calling selector function: " + b), false) throw b; }
+                })
+            })
+        };
+
+    </script>
+    <!-- RequireJS script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC56KdWPAs6stFdkXRC1xE0Es4hKmUaVoE&libraries=places&callback=initMap"></script>
+    <script src="js/container/require.js?crc=7928878" type="text/javascript" async data-main="js/container/museconfig.js?crc=4286661555" onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }" onerror="window.Muse.assets.check();"></script>
+</body>
+</html>

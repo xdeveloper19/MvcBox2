@@ -1,0 +1,112 @@
+<manifest alg="2" build="2018.1.0.386" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="Konteyner.ru" resolutions="1x" timestamp="1574083136459">
+  <folder name="css/container">
+    <file name="site_global.css" crc="444006867"/>
+    <file name="index.css" crc="221334264" ref="index"/>
+    <file name="nomq_index.css" crc="284178555" ref="index"/>
+    <file name="___________.css" crc="4161016058" ref="калькулятор"/>
+    <file name="nomq____________.css" crc="17848710" ref="калькулятор"/>
+    <file name="_________-__________.css" crc="372074256" ref="мобильное-приложение"/>
+    <file name="nomq__________-__________.css" crc="97269923" ref="мобильное-приложение"/>
+  </folder>
+  <folder name="js/container">
+    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="museutils.js" crc="340535759" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="whatinput.js" crc="86476730" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="museconfig.js" crc="4286661555" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="jquery.watch.js" crc="51536988" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="jquery.museresponsive.js" crc="527716135" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="require.js" crc="7928878" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="webpro.js" crc="4059564322" ref="калькулятор"/>
+    <file name="musewpslideshow.js" crc="3862962738" ref="калькулятор"/>
+    <file name="jquery.museoverlay.js" crc="4147669564" ref="калькулятор"/>
+    <file name="touchswipe.js" crc="4075097462" ref="калькулятор"/>
+  </folder>
+  <folder name="img/container">
+    <file name="optovaya_torgovlya_tovarami_v_donecke_dnr_luganske_lnr_donbasse_0.jpg" crc="3806143452" seo="true" ref="index">
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+    </file>
+    <file name="ывапывап.jpg" crc="19511726" seo="true" ref="index">
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+    </file>
+    <file name="konteiner4.png" crc="183970409" seo="true" ref="index">
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+    </file>
+    <file name="ывап.jpg" crc="79286467" seo="true" ref="index">
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+    </file>
+    <file name="knopka-rasschitat.png" crc="242026764" seo="true" ref="index">
+      <caption webpage="index" alt=""/>
+      <caption webpage="index" alt=""/>
+    </file>
+    <file name="blank.gif" crc="4208392903" ref="index:калькулятор:мобильное-приложение"/>
+    <file name="ваыпвап.jpg" crc="4198735797" seo="true" ref="калькулятор">
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+    </file>
+    <file name="пглпрлпр.jpg" crc="3780782184" seo="true" ref="калькулятор">
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+    </file>
+    <file name="енгекг.jpg" crc="20187305" seo="true" ref="калькулятор">
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+    </file>
+    <file name="bt_select.jpg" crc="294919042" seo="true" ref="калькулятор">
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+    </file>
+    <file name="ывапвапв.jpg" crc="522914242" seo="true" ref="калькулятор">
+      <caption webpage="калькулятор" alt=""/>
+      <caption webpage="калькулятор" alt=""/>
+    </file>
+    <file name="743c7dbdaf900c32037386a20d052640.png" crc="3785903596" seo="true" ref="мобильное-приложение">
+      <caption webpage="мобильное-приложение" alt=""/>
+      <caption webpage="мобильное-приложение" alt=""/>
+    </file>
+    <file name="78dcc65e67962d3d4f4e4d535793e48b.png" crc="4193707738" seo="true" ref="мобильное-приложение">
+      <caption webpage="мобильное-приложение" alt=""/>
+      <caption webpage="мобильное-приложение" alt=""/>
+    </file>
+    <file name="паропаро.png" crc="3869176522" seo="true" ref="мобильное-приложение">
+      <caption webpage="мобильное-приложение" alt=""/>
+      <caption webpage="мобильное-приложение" alt=""/>
+    </file>
+    <file name="цукеуекуе.png" crc="4090078604" seo="true" ref="мобильное-приложение">
+      <caption webpage="мобильное-приложение" alt=""/>
+      <caption webpage="мобильное-приложение" alt=""/>
+    </file>
+  </folder>
+  <file name="index.html" crc="354367044" seo="true" mt="1574082187118" redirect="true"/>
+  <file name="калькулятор.html" crc="3979720406" seo="true" mt="1574082326247" redirect="true"/>
+  <file name="мобильное-приложение.html" crc="325347604" seo="true" mt="1574082578051" redirect="true"/>
+</manifest>
