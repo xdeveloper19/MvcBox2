@@ -163,7 +163,5 @@ namespace MvcBox.ApiService
         {
             return new string[] { "value1", "value2" };
         }
-
-
     }
 }

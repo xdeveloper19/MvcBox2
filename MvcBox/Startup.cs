@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +13,21 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System;
 using Entities.Repository;
 using System.Collections.Generic;
+using Entities.Configuration;
+using Entities.Interfaces;
+using Entities.Repository.Base;
+using MvcBox.Services.Interfaces;
+using MvcBox.Services.UserService;
+using Entities.Repository.Imitator;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using MvcBox.AuthHelpers;
+using MvcBox.Services;
 
 namespace MvcBox
 {
@@ -30,12 +43,16 @@ namespace MvcBox
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAspnetRunServices(services);
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationUserContext>(options =>
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.UseSqlServer(Configuration.GetConnectionString("DEBContext"), x => x.MigrationsAssembly("Entities")));
 
             services.AddDbContext<SmartBoxContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DEBContext"), x => x.MigrationsAssembly("Entities")));
+
+            services.AddDbContext<ImitatorContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DEBContext"), x => x.MigrationsAssembly("Entities")));
 
             services.AddIdentity<User, IdentityRole>()
@@ -69,6 +86,98 @@ namespace MvcBox
                     "https://httpstatuses.com/404";
                 }
                 );
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddCookie()
+            .AddJwtBearer(x =>
+            {
+                //x.Events = new JwtBearerEvents
+                //{
+                //    OnTokenValidated = context =>
+                //    {
+                //        var userService = context.HttpContext.RequestServices.GetRequiredService<IAuthService>();
+                //        Guid userId;
+                //        var result = Guid.TryParse(context.Principal.Identity.Name, out userId);
+                //        var user = userService.GetUser(userId);
+                //        if (user != null)
+                //        {
+                //            // return unauthorized if user no longer exists
+                //            context.Fail("Unauthorized");
+                //        }
+                //        return Task.CompletedTask;
+                //    }
+                //};
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthorization(options => options.AddPolicy("editContent", policyBuilder =>
+            {
+                policyBuilder.RequireAuthenticatedUser()
+                    .RequireAssertion(context => context.User.HasClaim("CanEditContent", "true"))
+                    .Build();
+            }));
+            
+            //services.AddControllersWithViews().AddJsonOptions
+            //(options =>
+            //    options.JsonSerializerOptions.MaxDepth = 1024
+            //);
+        }
+
+        /// <summary>
+        /// Configure Services.
+        /// </summary>
+        /// <param name="services"></param>
+        private void ConfigureAspnetRunServices(IServiceCollection services)
+        {
+            //    services.AddControllers()
+            //.AddControllersAsServices();
+            // Add Core Layer
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            //services.Configure<BaseProjectSettings>(Configuration.GetSection("BaseProjectSettings"));
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
+
+            //services.AddScoped<IFileDataRepository, FileDataRepository>();
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            // Add Application Layer
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<ILocationService, LocationService>();
+            //services.AddScoped<IFileDataService, FileDataService>();
+
+            // Add Web Layer
+            services.AddAutoMapper(typeof(Startup)); // Add AutoMapper
+            /*services.AddScoped<IIndexPageService, IndexPageService>();
+            services.AddScoped<IProductPageService, ProductPageService>();
+            services.AddScoped<ICategoryPageService, CategoryPageService>();*/
+
+            // Add Miscellaneous
+            services.AddHttpContextAccessor();
+            /* services.AddHealthChecks()
+                 .AddCheck<IndexPageHealthCheck>("home_page_health_check");*/
         }
 
         private async System.Threading.Tasks.Task CreateUserRoles(IServiceProvider serviceProvider)
@@ -122,10 +231,12 @@ namespace MvcBox
                 ServeUnknownFileTypes = true
             });
 
-            app.UseRouting();
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

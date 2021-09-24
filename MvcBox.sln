@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcBox", "MvcBox\MvcBox.csproj", "{8FB1BBC2-F2D6-458F-9A75-B2AE0EBD9A1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcBox", "MvcBox\MvcBox.csproj", "{8FB1BBC2-F2D6-458F-9A75-B2AE0EBD9A1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{C6716B96-E6AB-4407-85DE-757ECD73092C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{C6716B96-E6AB-4407-85DE-757ECD73092C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcBox.Services", "MvcBox.Services\MvcBox.Services.csproj", "{73CEFFE4-9CA4-424B-B0B2-AC99A1CC188F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C6716B96-E6AB-4407-85DE-757ECD73092C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6716B96-E6AB-4407-85DE-757ECD73092C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6716B96-E6AB-4407-85DE-757ECD73092C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73CEFFE4-9CA4-424B-B0B2-AC99A1CC188F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CEFFE4-9CA4-424B-B0B2-AC99A1CC188F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CEFFE4-9CA4-424B-B0B2-AC99A1CC188F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CEFFE4-9CA4-424B-B0B2-AC99A1CC188F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

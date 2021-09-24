@@ -13,6 +13,7 @@ using Entities.Models;
 using Entities.ViewModels.OrderViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity;
+using MvcBox.Services.Interfaces;
 
 namespace MvcBox.ApiService
 {
@@ -22,11 +23,13 @@ namespace MvcBox.ApiService
     {
         private readonly SmartBoxContext _boxContext;
         private readonly UserManager<User> _userManager;
+        private readonly IDeviceService _devService;
 
-        public ContainerController(SmartBoxContext boxContext, UserManager<User> userManager)
+        public ContainerController(SmartBoxContext boxContext, UserManager<User> userManager, IDeviceService dev)
         {
             _boxContext = boxContext;
             _userManager = userManager;
+            _devService = dev ?? throw new ArgumentNullException(nameof(dev));
         }
 
         [HttpPost]
@@ -35,7 +38,20 @@ namespace MvcBox.ApiService
         {
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
             var Result = await BoxData.Create(name);
-            return Result;
+
+            try
+            {
+                await _devService.UpdatePhotoRequest(name);
+                Result.Message = "Успешно.";
+                Result.Status = ResponseResult.OK;
+                return Result;
+            }
+            catch (Exception ex)
+            {
+                Result.Message = ex.Message;
+                Result.Status = ResponseResult.Error;
+                return Result;
+            }
         }
 
         [HttpGet]

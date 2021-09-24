@@ -18,6 +18,8 @@ namespace Entities.Repository
     public class ContainerMethods
     {
         private readonly SmartBoxContext _boxContext;
+        private readonly ImitatorContext _imContext;
+
         public ContainerMethods(SmartBoxContext boxContext)
         {
             _boxContext = boxContext;
