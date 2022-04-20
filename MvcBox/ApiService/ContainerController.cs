@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Entities.Context;
+﻿using Entities.Context;
+using Entities.Models;
 using Entities.Repository;
 using Entities.ViewModels;
 using Entities.ViewModels.ContainerViewModels;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Entities.Models;
 using Entities.ViewModels.OrderViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MvcBox.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MvcBox.ApiService
 {
@@ -32,6 +29,11 @@ namespace MvcBox.ApiService
             _devService = dev ?? throw new ArgumentNullException(nameof(dev));
         }
 
+        /// <summary>
+        /// Создает вирутальный контейнер
+        /// </summary>
+        /// <param name="name">IMEI устройства</param>
+        /// <returns>Успех или нет</returns>
         [HttpPost]
         [Route("Create")]
         public async Task<ServiceResponseObject<ContainerResponse>> Create(string name)
@@ -62,41 +64,6 @@ namespace MvcBox.ApiService
             var Result = await BoxData.SearchCommandPhoto(name);
             return Result;
         }
-
-        [HttpGet]
-        [Route("GetRandomBox")]
-        public async Task<ServiceResponseObject<GetBoxIdResponse>> GetRandomBox()
-        {
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.GetRandomBox();
-            return Result;
-        }
-
-        [HttpPatch]
-        [Route("GetImitatorSensors")]
-        public async Task<ActionResult> GetImitatorSensors(string id)
-        {
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.GetImitatorSensors(id);
-            if (Result.Status == ResponseResult.Error)
-                return BadRequest(Result);
-            else
-                return Ok(Result.ResponseData);
-        }
-
-
-        [HttpPatch]
-        [Route("TestSensors")]
-        public async Task<ActionResult<ServiceResponseObject<BaseResponseObject>>> TestSensors(string id, string temp, string light, string humidity)
-        {
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.TestSensors(id, temp,light, humidity);
-            if (Result.Status == ResponseResult.Error)
-                return BadRequest(Result);
-            else
-             return Ok(Result);
-        }
-
 
 
         [HttpPost]
@@ -158,15 +125,6 @@ namespace MvcBox.ApiService
         }
 
         [HttpGet]
-        [Route("GetBoxesByName")]
-        public async Task<ServiceResponseObject<ListResponse<ContainerResponse>>> GetBoxesByName(string name)
-        {
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.GetBoxesByName(name);
-            return Result;
-        }
-
-        [HttpGet]
         [Route("GetBox")]
         public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(Guid id) /*Guid driverId, Guid orderId*/
         {
@@ -197,6 +155,17 @@ namespace MvcBox.ApiService
             return Result;
         }
 
+        #region Obsolete
+
+        [HttpGet]
+        [Route("GetBoxesByName")]
+        public async Task<ServiceResponseObject<ListResponse<ContainerResponse>>> GetBoxesByName(string name)
+        {
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.GetBoxesByName(name);
+            return Result;
+        }
+
         //[HttpGet]
         //[Route("GetBoxForUser")]
         //public async Task<ServiceResponseObject<BoxDataResponse>> GetBoxForUser(string userId)
@@ -214,6 +183,40 @@ namespace MvcBox.ApiService
         //    response.Status = ResponseResult.Error;
         //    return response;
         //}
+
+        [HttpGet]
+        [Route("GetRandomBox")]
+        public async Task<ServiceResponseObject<GetBoxIdResponse>> GetRandomBox()
+        {
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.GetRandomBox();
+            return Result;
+        }
+
+        [HttpPatch]
+        [Route("GetImitatorSensors")]
+        public async Task<ActionResult> GetImitatorSensors(string id)
+        {
+            //Proxy Server
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.GetImitatorSensors(id);
+            if (Result.Status == ResponseResult.Error)
+                return BadRequest(Result);
+            else
+                return Ok(Result.ResponseData);
+        }
+
+        [HttpPatch]
+        [Route("TestSensors")]
+        public async Task<ActionResult<ServiceResponseObject<BaseResponseObject>>> TestSensors(string id, string temp, string light, string humidity)
+        {
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.TestSensors(id, temp, light, humidity);
+            if (Result.Status == ResponseResult.Error)
+                return BadRequest(Result);
+            else
+                return Ok(Result);
+        }
 
         [HttpGet]
         [Route("GetBoxesLocation")]
@@ -261,7 +264,7 @@ namespace MvcBox.ApiService
             response.Message = errors[0];
             return response;
         }
-
+        
         // GET: api/Container
         [HttpGet]
         [Route("Get")]
@@ -274,9 +277,9 @@ namespace MvcBox.ApiService
         {
             try
             {
-                var driver = _boxContext.Drivers.Find(driverId);
-                if (driver == null)
-                    return false;
+                //var driver = _boxContext.Drivers.Find(driverId);
+                //if (driver == null)
+                //    return false;
                 return true;
             }
             catch (Exception)
@@ -286,6 +289,6 @@ namespace MvcBox.ApiService
             }
         }
 
-
+        #endregion
     }
 }

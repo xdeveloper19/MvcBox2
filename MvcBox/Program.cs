@@ -29,7 +29,7 @@ namespace MvcBox
                 {
                     var context = services.GetRequiredService<SmartBoxContext>();
                     context.Database.Migrate();
-                    SeedData.InitializeOrderStages(services);
+                    //SeedData.InitializeOrderStages(services);
                     SeedData.InitializeSensorType(services);
                     //SeedData.InitializeTestContainer(services, IMEI);
                 }

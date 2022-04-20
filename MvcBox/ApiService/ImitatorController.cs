@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Entities.Configuration;
+﻿using Entities.Configuration;
 using Entities.ViewModels;
 using Entities.ViewModels.ImitatorViewModels;
 using Entities.ViewModels.ImitatorViewModels.Base;
@@ -14,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MvcBox.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

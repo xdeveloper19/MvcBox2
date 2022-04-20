@@ -1,15 +1,11 @@
-﻿using AutoMapper;
-using Entities.Configuration;
+﻿using Entities.Configuration;
 using Entities.Interfaces;
-using Entities.Models.Imitator;
 using Entities.ViewModels.ImitatorViewModels;
 using Entities.ViewModels.ImitatorViewModels.Base;
 using Microsoft.Extensions.Options;
 using MvcBox.Services.Interfaces;
 using MvcBox.Services.Mapper;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MvcBox.Services

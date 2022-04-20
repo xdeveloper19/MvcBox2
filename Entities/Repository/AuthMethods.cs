@@ -88,8 +88,8 @@ namespace Entities.Repository
                         IsBusy = false,
                         BoxState = 1
                     };
-                    await _boxContext.Drivers.AddAsync(driver);
-                    _boxContext.SaveChanges();
+                    //await _boxContext.Drivers.AddAsync(driver);
+                    //_boxContext.SaveChanges();
 
                     DataContent.ResponseData.DriverId = driver.Id;
                 }

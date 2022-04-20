@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Entities.Models
@@ -20,10 +19,9 @@ namespace Entities.Models
         public SmartBox()
         {
             Alarms = new List<Alarm>();
-            OrderHasBoxes = new List<OrderHasBox>();
+            Media = new List<Media>();
             Variables = new List<Variable>();
             Events = new List<Event>();
-            DriverHasBoxes = new List<DriverHasBox>();
             Sensors = new List<Sensor>();
             UserHasAccesses = new List<UserHasAccess>();
             Locations = new HashSet<Location>();
@@ -52,13 +50,11 @@ namespace Entities.Models
         //public double BatteryPower { get; set; }
         //[MaxLength(45)]
         public string CloudKey { get; set; }
-        public Guid DriverId { get; set; }
         public string OwnerId { get; set; }
         public ICollection<Sensor> Sensors { get; set; }
+        public ICollection<Media> Media { get; set; }
         public ICollection<Alarm> Alarms { get; set; }
-        public ICollection<DriverHasBox> DriverHasBoxes { get; set; }
         public ICollection<Event> Events { get; set; }
-        public ICollection<OrderHasBox> OrderHasBoxes { get; set; }
         public ICollection<Variable> Variables { get; set; }
         public ICollection<UserHasAccess> UserHasAccesses { get; set; }
         public ICollection<Location> Locations { get; set; }

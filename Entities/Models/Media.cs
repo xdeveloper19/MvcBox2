@@ -2,12 +2,12 @@
 
 namespace Entities.Models
 {
-    public class Event
+    public class Media
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Message { get; set; }
+        public string Path { get; set; }
+        public string Type { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid BoxId { get; set; }
-        public Guid EventTypeId { get; set; }
     }
 }
