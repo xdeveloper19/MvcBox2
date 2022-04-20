@@ -11,6 +11,7 @@ namespace Entities.Context
             Database.Migrate();
         }
 
+        #region Obsolete
         //public DbSet<Driver> Drivers { get; set; }
         //public DbSet<DriverHasBox> DriverHasBoxes { get; set; }
         //public DbSet<Order> Orders { get; set; }
@@ -21,6 +22,7 @@ namespace Entities.Context
         //public DbSet<Rate> Rates { get; set; }
         //public DbSet<Task> Tasks { get; set; }
         //public DbSet<UserHasOrder> UserHasOrders { get; set; }
+        #endregion
         public DbSet<SmartBox> SmartBoxes { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Media> Media { get; set; }
