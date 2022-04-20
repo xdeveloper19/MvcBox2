@@ -331,12 +331,12 @@ namespace Entities.Repository
         /// <summary>
         /// Получение данных контейнера
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="IMEI">IMEI контейнера</param>
         /// <returns></returns>
-        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(Guid id)
+        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI)
         {
             ServiceResponseObject<ListResponse<BoxDataResponse>> ContentData = new ServiceResponseObject<ListResponse<BoxDataResponse>>();
-            var box = await _boxContext.SmartBoxes.FindAsync(id);
+            var box = await _boxContext.SmartBoxes.Where(s => s.Name == IMEI).FirstOrDefaultAsync();
 
             if (box != null)
             {

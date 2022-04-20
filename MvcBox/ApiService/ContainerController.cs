@@ -4,6 +4,7 @@ using Entities.Repository;
 using Entities.ViewModels;
 using Entities.ViewModels.ContainerViewModels;
 using Entities.ViewModels.OrderViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MvcBox.Services.Interfaces;
@@ -36,6 +37,7 @@ namespace MvcBox.ApiService
         /// <returns>Успех или нет</returns>
         [HttpPost]
         [Route("Create")]
+        [Authorize]
         public async Task<ServiceResponseObject<ContainerResponse>> Create(string name)
         {
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
@@ -124,12 +126,18 @@ namespace MvcBox.ApiService
             return response;
         }
 
+        /// <summary>
+        /// Возвращает последние показания датчиков
+        /// </summary>
+        /// <param name="IMEI">IMEI контейнера</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetBox")]
-        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(Guid id) /*Guid driverId, Guid orderId*/
+        [Authorize]
+        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI) /*Guid driverId, Guid orderId*/
         {
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.GetBox(id);
+            var Result = await BoxData.GetBox(IMEI);
             //if (Result.Status == ResponseResult.OK)
             //{
             //    if (SearchDriver(driverId))

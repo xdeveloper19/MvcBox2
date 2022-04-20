@@ -239,10 +239,6 @@ namespace MvcBox.ApiService
             }
         }
 
-        //public async Task<object> GetUsers(string search, string start, string length, DataTableModel.DtOrder[] order, DataTableModel.DtColumn[] columns)
-        //{
-        //    return await _userService.GetUsers(search, start, length, order, columns);
-        //}
         //Получение ID пользователя
         private Guid getUserId()
         {
