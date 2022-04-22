@@ -8,7 +8,7 @@ namespace Entities.Context
     {
         public SmartBoxContext(DbContextOptions<SmartBoxContext> options) : base(options)
         {
-            Database.Migrate();
+           // Database.Migrate();
         }
 
         #region Obsolete
@@ -120,7 +120,7 @@ namespace Entities.Context
                 .WithOne().HasForeignKey(p => p.VariableId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<UserHasAccess>().HasKey(p => new { p.BoxId, p.UserId });
+            modelBuilder.Entity<UserHasAccess>().HasKey(p => new { p.BoxId, p.OwnerId });
         }
     }
 }

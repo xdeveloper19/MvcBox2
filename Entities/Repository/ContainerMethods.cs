@@ -60,6 +60,8 @@ namespace Entities.Repository
             var result = await _boxContext.SmartBoxes.AddAsync(box);
             _boxContext.SaveChanges();
 
+            SeedData.InitializeSensors(_boxContext, box.Id);
+
             DataContent.Status = ResponseResult.OK;
             DataContent.Message = "Объект успешно добавлен!";
             DataContent.ResponseData = new ContainerResponse
@@ -392,7 +394,7 @@ namespace Entities.Repository
                 ContentData.Status = ResponseResult.Error;
                 return ContentData;
             }
-            var box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Id == model.Id);
+            var box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Name == model.Id);
             //var team = await _teamContext.Teams.FirstOrDefaultAsync(f => f.Id == user.TeamId);
 
             if (box == null)

@@ -77,6 +77,11 @@ namespace MvcBox.Services
             }
         }
 
+        /// <summary>
+        /// Добавить запрос на получение фото
+        /// </summary>
+        /// <param name="IMEI"></param>
+        /// <returns></returns>
         public async Task UpdatePhotoRequest(string IMEI)
         {
             try

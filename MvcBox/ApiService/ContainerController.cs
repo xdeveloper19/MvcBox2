@@ -40,22 +40,10 @@ namespace MvcBox.ApiService
         [Authorize]
         public async Task<ServiceResponseObject<ContainerResponse>> Create(string name)
         {
+            //await _devService.UpdatePhotoRequest(name);
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
             var Result = await BoxData.Create(name);
-
-            try
-            {
-                await _devService.UpdatePhotoRequest(name);
-                Result.Message = "Успешно.";
-                Result.Status = ResponseResult.OK;
-                return Result;
-            }
-            catch (Exception ex)
-            {
-                Result.Message = ex.Message;
-                Result.Status = ResponseResult.Error;
-                return Result;
-            }
+            return Result;
         }
 
         [HttpGet]
@@ -70,17 +58,16 @@ namespace MvcBox.ApiService
 
         [HttpPost]
         [Route("EditSensors")]
+        [Authorize]
         public async Task<ServiceResponseObject<BaseResponseObject>> EditSensors(EditBoxViewModel model)
         {
+            #region Obsolete
             //if (ModelState.IsValid)
             //{
             //    ContainerMethods BoxData = new ContainerMethods(_boxContext);
             //    var Result = await BoxData.EditSensors(model);
             //    return Result;
             //}
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.EditSensors(model);
-            return Result;
             //ServiceResponseObject<BaseResponseObject> response = new ServiceResponseObject<BaseResponseObject>();
             //response.Status = ResponseResult.Error;
 
@@ -96,6 +83,10 @@ namespace MvcBox.ApiService
 
             //response.Message = errors[0];
             //return response;
+            #endregion
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.EditSensors(model);
+            return Result;
         }
 
         [HttpPost]
@@ -134,10 +125,13 @@ namespace MvcBox.ApiService
         [HttpGet]
         [Route("GetBox")]
         [Authorize]
-        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI) /*Guid driverId, Guid orderId*/
+        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI)
         {
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
             var Result = await BoxData.GetBox(IMEI);
+            return Result;
+
+            #region Obsolete
             //if (Result.Status == ResponseResult.OK)
             //{
             //    if (SearchDriver(driverId))
@@ -160,7 +154,7 @@ namespace MvcBox.ApiService
             //        Result.Message += " Контейнер привязан.";
             //    }
             //}
-            return Result;
+            #endregion
         }
 
         #region Obsolete
