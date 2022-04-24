@@ -9,6 +9,7 @@ namespace Entities.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public bool Acknowledge { get; set; }
         public string Message { get; set; }
+        public int Number { get; set; }
         public DateTime AcknowledgedAt { get; set; }
         public bool Active { get; set; }
         public DateTime ReleasedAt { get; set; }

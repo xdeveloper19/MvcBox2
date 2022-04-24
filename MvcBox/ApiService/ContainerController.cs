@@ -55,6 +55,39 @@ namespace MvcBox.ApiService
             return Result;
         }
 
+        [HttpGet]
+        [Route("RaiseAlarm")]
+        [Authorize]
+        public async Task<IActionResult> RaiseAlarm(string IMEI, string option)
+        {
+            try
+            {
+                ContainerMethods boxData = new ContainerMethods(_boxContext);
+                var response = await boxData.RaiseAlarm(IMEI, option);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AlarmResponse() { Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("ReleaseAlarm")]
+        [Authorize]
+        public async Task<IActionResult> ReleaseAlarm(string IMEI, string option)
+        {
+            try
+            {
+                ContainerMethods boxData = new ContainerMethods(_boxContext);
+                var response = await boxData.ReleaseAlarm(IMEI, option);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AlarmResponse() { Message = ex.Message });
+            }
+        }
 
         [HttpPost]
         [Route("EditSensors")]

@@ -1,5 +1,6 @@
 ﻿using Entities.Context;
 using Entities.Models;
+using Entities.Repository.DefaultData;
 using Entities.ViewModels;
 using Entities.ViewModels.ContainerViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -71,226 +72,82 @@ namespace Entities.Repository
             };
             return DataContent;
         }
-
+        
         /// <summary>
-        /// Поиск записи в БД о наличии запроса на фото
+        /// Вызов тревоги
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="IMEI"></param>
+        /// <param name="option"></param>
         /// <returns></returns>
-        public async Task<ServiceResponseObject<BaseResponseObject>> SearchCommandPhoto(string name)
+        public async Task<AlarmResponse> RaiseAlarm(string IMEI, string option)
         {
-            ServiceResponseObject<BaseResponseObject> DataContent = new ServiceResponseObject<BaseResponseObject>();
+            int alarmNumber = int.Parse(option);
+            var boxId = getBoxId(IMEI);
+            var alarm = await _boxContext.Alarms.Where(s => s.Number == alarmNumber && s.BoxId == boxId && s.Active == true).FirstOrDefaultAsync();
 
-            var box = _boxContext.SmartBoxes.Where(s => s.Name == name && s.CloudKey == "1").FirstOrDefault();
-            if (box != null)
+            if (alarm != null)
             {
-                box.CloudKey = "0";
-                _boxContext.Update(box);
-                await _boxContext.SaveChangesAsync();
-
-                DataContent.Status = ResponseResult.OK;
-                DataContent.Message = "Запрос от клиента на получение фото.";
-                return DataContent;
-            }
-
-
-            DataContent.Status = ResponseResult.Error;
-            DataContent.Message = "Запросов нет.";
-            return DataContent;
-        }
-
-        /// <summary>
-        /// Получение показаний имитатора
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public async Task<ServiceResponseObject<BoxResponse>> GetImitatorSensors(string id)
-        {
-            ServiceResponseObject<BoxResponse> DataContent = new ServiceResponseObject<BoxResponse>();
-
-            try
-            {
-                var myHttpClient = new HttpClient();
-
-                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + id);
-                HttpResponseMessage response = await myHttpClient.GetAsync(uri2.ToString());
-                //var myHttpClient = new HttpClient();
-                //var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
-                //var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
-                // HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
-
-                string s_result;
-                using (HttpContent responseContent = response.Content)
+                var response = new AlarmResponse
                 {
-                    s_result = await responseContent.ReadAsStringAsync();
-                }
+                    Message = "Тревога уже вызвана."
+                };
 
-                if (response.IsSuccessStatusCode)
-                {
-                    DataContent.ResponseData = JsonConvert.DeserializeObject<BoxResponse>(s_result);
-                    DataContent.Status = ResponseResult.OK;
-                    DataContent.Message = "Успешно!";
-                    return DataContent;
-                }
-                ErrorResponse error = new ErrorResponse();
-                error = JsonConvert.DeserializeObject<ErrorResponse>(s_result);
-
-                DataContent.Message = error.Errors[0];
-                DataContent.Status = ResponseResult.Error;
-                return DataContent;
-            }
-            catch (Exception ex)
-            {
-                DataContent.Message = ex.Message;
-                DataContent.Status = ResponseResult.Error;
-                return DataContent;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Тестирование контроллеров.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="temp"></param>
-        /// <param name="light"></param>
-        /// <param name="humidity"></param>
-        /// <returns></returns>
-        public async System.Threading.Tasks.Task<ServiceResponseObject<BaseResponseObject>> TestSensors(string id, string temp, string light, string humidity)
-        {
-            ServiceResponseObject<BaseResponseObject> ContentData = new ServiceResponseObject<BaseResponseObject>();
-
-            //var model = _boxContext.SmartBoxes.Where(s => s.Name == id).FirstOrDefault();
-            //if (model == null)
-            //{
-            //    ContentData.Message = "Неправильный MD5 IMEI.";
-            //    ContentData.Status = ResponseResult.Error;
-            //    return ContentData;
-            //}
-
-            try
-            {
-                var myHttpClient = new HttpClient();
-                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + id);
-                HttpResponseMessage response = await myHttpClient.GetAsync(uri2.ToString());
-
-                string s_result;
-                using (HttpContent responseContent = response.Content)
-                {
-                    s_result = await responseContent.ReadAsStringAsync();
-                }
-
-                if (response.IsSuccessStatusCode)
-                {
-                    ViewModels.ContainerViewModels.BoxResponse o_data = new ViewModels.ContainerViewModels.BoxResponse();
-                    o_data.status.Sensors = new Dictionary<string, string>()
-                    {
-
-                        {"Температура","" },
-                        {"Влажность","" },
-                        {"Освещенность","" },
-                        {"Вес груза","" },
-                        {"Уровень заряда аккумулятора","" },
-                        {"Уровень сигнала","" },
-                        {"Состояние дверей","" },
-                        {"Состояние контейнера","" },
-                        {"Местоположение контейнера","" }
-                    };
-                    o_data = JsonConvert.DeserializeObject<ViewModels.ContainerViewModels.BoxResponse>(s_result);
-
-                    o_data.status.Sensors["Температура"] = temp;
-                    o_data.status.Sensors["Влажность"] = humidity;
-                    o_data.status.Sensors["Освещенность"] = light;
-
-                    ViewModels.ContainerViewModels.Status ForAnotherServer = new ViewModels.ContainerViewModels.Status
-                    {
-                        id = id,
-
-                        Sensors = new Dictionary<string, string>
-                        {
-                            ["Вес груза"] = o_data.status.Sensors["Вес груза"],
-                            ["Температура"] = o_data.status.Sensors["Температура"],
-                            ["Влажность"] = o_data.status.Sensors["Влажность"],
-                            ["Освещенность"] = o_data.status.Sensors["Освещенность"],
-                            ["Уровень заряда аккумулятора"] = o_data.status.Sensors["Уровень заряда аккумулятора"],
-                            ["Уровень сигнала"] = o_data.status.Sensors["Уровень сигнала"],
-                            ["Состояние дверей"] = o_data.status.Sensors["Состояние дверей"],
-                            ["Состояние контейнера"] = o_data.status.Sensors["Состояние контейнера"],
-                            ["Местоположение контейнера"] = o_data.status.Sensors["Местоположение контейнера"]
-                        },
-                    };
-
-                    var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors?" + "id=" + o_data.status.id + "&sensors[Вес груза]=" + o_data.status.Sensors["Вес груза"]
-                    + "&sensors[Температура]=" + o_data.status.Sensors["Температура"] + "&sensors[Влажность]=" + o_data.status.Sensors["Влажность"] + "&sensors[Освещенность]=" + o_data.status.Sensors["Освещенность"]
-                    + "&sensors[Уровень заряда аккумулятора]=" + o_data.status.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + o_data.status.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + o_data.status.Sensors["Состояние дверей"]
-                    + "&sensors[Состояние контейнера]=" + o_data.status.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + o_data.status.Sensors["Местоположение контейнера"]);
-
-                    
-                   // var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors");
-                    HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri3.ToString(), new StringContent(JsonConvert.SerializeObject(ForAnotherServer), Encoding.UTF8, "application/json"));
-
-                    string s_result_from_server;
-                    using (HttpContent responseContent = responseFromAnotherServer.Content)
-                    {
-                        s_result_from_server = await responseContent.ReadAsStringAsync();
-                    }
-
-
-
-                    if (responseFromAnotherServer.StatusCode == HttpStatusCode.OK)
-                    {
-                        ContentData = JsonConvert.DeserializeObject<ServiceResponseObject<BaseResponseObject>>(s_result_from_server);
-                        return ContentData;
-                    }
-                    ErrorResponse error2 = new ErrorResponse();
-                    error2 = JsonConvert.DeserializeObject<ErrorResponse>(s_result_from_server);
-
-                    ContentData.Message = error2.Errors[0];
-                    ContentData.Status = ResponseResult.Error;
-                    return ContentData;
-                }
-              
-                ErrorResponse error = new ErrorResponse();
-                error = JsonConvert.DeserializeObject<ErrorResponse>(s_result);
-
-                ContentData.Message = error.Errors[0];
-                ContentData.Status = ResponseResult.Error;
-                return ContentData;
-
-            }
-            catch (Exception ex)
-            {
-                ContentData.Message = ex.Message;
-                ContentData.Status = ResponseResult.Error;
-                return ContentData;
-            }
-        }
-
-        /// <summary>
-        /// Получение рандомного контейнера
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ServiceResponseObject<GetBoxIdResponse>> GetRandomBox()
-        {
-            ServiceResponseObject<GetBoxIdResponse> DataContent = new ServiceResponseObject<GetBoxIdResponse>();
-            var Item = await _boxContext.SmartBoxes.OrderBy(o => Guid.NewGuid()).FirstOrDefaultAsync();
-
-            if (Item == null)
-            {
-                DataContent.Status = ResponseResult.Error;
-                DataContent.Message = "Объекты отсутствуют.";
-                return DataContent;
+                return response;
             }
 
-            DataContent.Status = ResponseResult.OK;
-            DataContent.Message = "Успешно.";
-            DataContent.ResponseData = new GetBoxIdResponse
+            _boxContext.Alarms.Add(new Alarm
             {
-                BoxId = Item.Id.ToString(),
-                Name = Item.Name
+                Number = alarmNumber,
+                Active = true,
+                Message = AlarmDefaultData.Messages[alarmNumber],
+                AlarmTypeId = AlarmDefaultData.TypeId[alarmNumber],
+                BoxId = boxId,
+                Acknowledge = true,
+                AcknowledgedAt = DateTime.Now
+            });
+
+            await _boxContext.SaveChangesAsync();
+            var data = new AlarmResponse
+            {
+                Message = "Новая тревога успешно добавлена."
             };
-            return DataContent;
+
+            return data;
+        }
+
+        /// <summary>
+        /// Отмена тревоги
+        /// </summary>
+        /// <param name="IMEI"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public async Task<AlarmResponse> ReleaseAlarm(string IMEI, string option)
+        {
+            int alarmNumber = int.Parse(option);
+            var boxId = getBoxId(IMEI);
+            var alarm = await _boxContext.Alarms.Where(s => s.Number == alarmNumber && s.BoxId == boxId && s.Active == true).FirstOrDefaultAsync();
+
+            if (alarm == null)
+            {
+                var response = new AlarmResponse
+                {
+                    Message = "Тревога не была вызвана."
+                };
+
+                return response;
+            }
+
+            alarm.Active = false;
+            alarm.ReleasedAt = DateTime.Now;
+            _boxContext.Update(alarm);
+            await _boxContext.SaveChangesAsync();
+
+            var result = new AlarmResponse
+            {
+                Message = "Тревога успешно отменена."
+            };
+
+            return result;
         }
 
         /// <summary>
@@ -432,6 +289,233 @@ namespace Entities.Repository
             return ContentData;
         }
 
+        private Guid getBoxId(string IMEI)
+        {
+            var box = _boxContext.SmartBoxes.Where(s => s.Name == IMEI).FirstOrDefault();
+            return box.Id;
+        }
+
+        #region Obsolete
+
+        /// <summary>
+        /// Поиск записи в БД о наличии запроса на фото
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<BaseResponseObject>> SearchCommandPhoto(string name)
+        {
+            ServiceResponseObject<BaseResponseObject> DataContent = new ServiceResponseObject<BaseResponseObject>();
+
+            var box = _boxContext.SmartBoxes.Where(s => s.Name == name && s.CloudKey == "1").FirstOrDefault();
+            if (box != null)
+            {
+                box.CloudKey = "0";
+                _boxContext.Update(box);
+                await _boxContext.SaveChangesAsync();
+
+                DataContent.Status = ResponseResult.OK;
+                DataContent.Message = "Запрос от клиента на получение фото.";
+                return DataContent;
+            }
+
+
+            DataContent.Status = ResponseResult.Error;
+            DataContent.Message = "Запросов нет.";
+            return DataContent;
+        }
+
+        /// <summary>
+        /// Получение показаний имитатора
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<BoxResponse>> GetImitatorSensors(string id)
+        {
+            ServiceResponseObject<BoxResponse> DataContent = new ServiceResponseObject<BoxResponse>();
+
+            try
+            {
+                var myHttpClient = new HttpClient();
+
+                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + id);
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri2.ToString());
+                //var myHttpClient = new HttpClient();
+                //var id1 = CrossSettings.Current.GetValueOrDefault("id", "");
+                //var uri = new Uri("http://iot.tmc-centert.ru/api/container/getbox?id=" + id1);
+                // HttpResponseMessage response = await myHttpClient.GetAsync(uri.ToString());
+
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    DataContent.ResponseData = JsonConvert.DeserializeObject<BoxResponse>(s_result);
+                    DataContent.Status = ResponseResult.OK;
+                    DataContent.Message = "Успешно!";
+                    return DataContent;
+                }
+                ErrorResponse error = new ErrorResponse();
+                error = JsonConvert.DeserializeObject<ErrorResponse>(s_result);
+
+                DataContent.Message = error.Errors[0];
+                DataContent.Status = ResponseResult.Error;
+                return DataContent;
+            }
+            catch (Exception ex)
+            {
+                DataContent.Message = ex.Message;
+                DataContent.Status = ResponseResult.Error;
+                return DataContent;
+            }
+        }
+
+        /// <summary>
+        /// Тестирование контроллеров.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="temp"></param>
+        /// <param name="light"></param>
+        /// <param name="humidity"></param>
+        /// <returns></returns>
+        public async System.Threading.Tasks.Task<ServiceResponseObject<BaseResponseObject>> TestSensors(string id, string temp, string light, string humidity)
+        {
+            ServiceResponseObject<BaseResponseObject> ContentData = new ServiceResponseObject<BaseResponseObject>();
+
+            //var model = _boxContext.SmartBoxes.Where(s => s.Name == id).FirstOrDefault();
+            //if (model == null)
+            //{
+            //    ContentData.Message = "Неправильный MD5 IMEI.";
+            //    ContentData.Status = ResponseResult.Error;
+            //    return ContentData;
+            //}
+
+            try
+            {
+                var myHttpClient = new HttpClient();
+                var uri2 = new Uri("http://smartboxcity.ru:8003/imitator/status?id=" + id);
+                HttpResponseMessage response = await myHttpClient.GetAsync(uri2.ToString());
+
+                string s_result;
+                using (HttpContent responseContent = response.Content)
+                {
+                    s_result = await responseContent.ReadAsStringAsync();
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewModels.ContainerViewModels.BoxResponse o_data = new ViewModels.ContainerViewModels.BoxResponse();
+                    o_data.status.Sensors = new Dictionary<string, string>()
+                    {
+
+                        {"Температура","" },
+                        {"Влажность","" },
+                        {"Освещенность","" },
+                        {"Вес груза","" },
+                        {"Уровень заряда аккумулятора","" },
+                        {"Уровень сигнала","" },
+                        {"Состояние дверей","" },
+                        {"Состояние контейнера","" },
+                        {"Местоположение контейнера","" }
+                    };
+                    o_data = JsonConvert.DeserializeObject<ViewModels.ContainerViewModels.BoxResponse>(s_result);
+
+                    o_data.status.Sensors["Температура"] = temp;
+                    o_data.status.Sensors["Влажность"] = humidity;
+                    o_data.status.Sensors["Освещенность"] = light;
+
+                    ViewModels.ContainerViewModels.Status ForAnotherServer = new ViewModels.ContainerViewModels.Status
+                    {
+                        id = id,
+
+                        Sensors = new Dictionary<string, string>
+                        {
+                            ["Вес груза"] = o_data.status.Sensors["Вес груза"],
+                            ["Температура"] = o_data.status.Sensors["Температура"],
+                            ["Влажность"] = o_data.status.Sensors["Влажность"],
+                            ["Освещенность"] = o_data.status.Sensors["Освещенность"],
+                            ["Уровень заряда аккумулятора"] = o_data.status.Sensors["Уровень заряда аккумулятора"],
+                            ["Уровень сигнала"] = o_data.status.Sensors["Уровень сигнала"],
+                            ["Состояние дверей"] = o_data.status.Sensors["Состояние дверей"],
+                            ["Состояние контейнера"] = o_data.status.Sensors["Состояние контейнера"],
+                            ["Местоположение контейнера"] = o_data.status.Sensors["Местоположение контейнера"]
+                        },
+                    };
+
+                    var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors?" + "id=" + o_data.status.id + "&sensors[Вес груза]=" + o_data.status.Sensors["Вес груза"]
+                    + "&sensors[Температура]=" + o_data.status.Sensors["Температура"] + "&sensors[Влажность]=" + o_data.status.Sensors["Влажность"] + "&sensors[Освещенность]=" + o_data.status.Sensors["Освещенность"]
+                    + "&sensors[Уровень заряда аккумулятора]=" + o_data.status.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + o_data.status.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + o_data.status.Sensors["Состояние дверей"]
+                    + "&sensors[Состояние контейнера]=" + o_data.status.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + o_data.status.Sensors["Местоположение контейнера"]);
+
+
+                    // var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors");
+                    HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri3.ToString(), new StringContent(JsonConvert.SerializeObject(ForAnotherServer), Encoding.UTF8, "application/json"));
+
+                    string s_result_from_server;
+                    using (HttpContent responseContent = responseFromAnotherServer.Content)
+                    {
+                        s_result_from_server = await responseContent.ReadAsStringAsync();
+                    }
+
+
+
+                    if (responseFromAnotherServer.StatusCode == HttpStatusCode.OK)
+                    {
+                        ContentData = JsonConvert.DeserializeObject<ServiceResponseObject<BaseResponseObject>>(s_result_from_server);
+                        return ContentData;
+                    }
+                    ErrorResponse error2 = new ErrorResponse();
+                    error2 = JsonConvert.DeserializeObject<ErrorResponse>(s_result_from_server);
+
+                    ContentData.Message = error2.Errors[0];
+                    ContentData.Status = ResponseResult.Error;
+                    return ContentData;
+                }
+
+                ErrorResponse error = new ErrorResponse();
+                error = JsonConvert.DeserializeObject<ErrorResponse>(s_result);
+
+                ContentData.Message = error.Errors[0];
+                ContentData.Status = ResponseResult.Error;
+                return ContentData;
+
+            }
+            catch (Exception ex)
+            {
+                ContentData.Message = ex.Message;
+                ContentData.Status = ResponseResult.Error;
+                return ContentData;
+            }
+        }
+
+        /// <summary>
+        /// Получение рандомного контейнера
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<GetBoxIdResponse>> GetRandomBox()
+        {
+            ServiceResponseObject<GetBoxIdResponse> DataContent = new ServiceResponseObject<GetBoxIdResponse>();
+            var Item = await _boxContext.SmartBoxes.OrderBy(o => Guid.NewGuid()).FirstOrDefaultAsync();
+
+            if (Item == null)
+            {
+                DataContent.Status = ResponseResult.Error;
+                DataContent.Message = "Объекты отсутствуют.";
+                return DataContent;
+            }
+
+            DataContent.Status = ResponseResult.OK;
+            DataContent.Message = "Успешно.";
+            DataContent.ResponseData = new GetBoxIdResponse
+            {
+                BoxId = Item.Id.ToString(),
+                Name = Item.Name
+            };
+            return DataContent;
+        }
+
         /// <summary>
         /// Редактирование состояния контейнера
         /// </summary>
@@ -527,10 +611,10 @@ namespace Entities.Repository
             .Load();
 
                 //var sendors = GetBox(box.Id);
-                
+
                 if (box.Locations == null || box.Locations.Count == 0)
                     continue;
-                
+
                 // Получить последние координаты с объекта
                 var lastItem = box.Locations.OrderBy(p => p.CurrentDate).Select(f => new BoxLocation
                 {
@@ -565,6 +649,8 @@ namespace Entities.Repository
             ContentData.Status = ResponseResult.OK;
             return ContentData;
         }
+
+        #endregion
 
     }
 }
