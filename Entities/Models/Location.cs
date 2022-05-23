@@ -9,7 +9,7 @@ namespace Entities.Models
     {
         /*Выпадающий список объектов (первые 20) по  именованию, отправление айди выбранного объекта*/
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public double? Altitude { get; set; }

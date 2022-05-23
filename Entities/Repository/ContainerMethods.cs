@@ -171,8 +171,7 @@ namespace Entities.Repository
                     BoxId = box.Id,
                     Latitude = model.Lat1,
                     Longitude = model.Lon1,
-                    CurrentDate = model.Date,
-                    Name = box.Name
+                    CurrentDate = model.Date
                 };
 
                 _boxContext.Locations.Add(location);
@@ -265,6 +264,8 @@ namespace Entities.Repository
                         .Collection(c => c.Sensors)
                         .Load();
 
+            var date = DateTime.Now;
+
             foreach (var sensor in box.Sensors)
             {
                 _boxContext.Entry(sensor)
@@ -273,7 +274,7 @@ namespace Entities.Repository
 
                 _boxContext.SensorDatas.Add(new SensorData
                 {
-                    CreatedAt = model.Date,
+                    CreatedAt = date,
                     SensorId = sensor.Id,
                     SensorName = sensor.Name,
                     Value = model.Sensors.Where(f => f.Key == sensor.Name).Select(s => s.Value).FirstOrDefault()
@@ -619,7 +620,6 @@ namespace Entities.Repository
                 var lastItem = box.Locations.OrderBy(p => p.CurrentDate).Select(f => new BoxLocation
                 {
                     SmartBoxId = f.BoxId,
-                    Name = f.Name,
                     Latitude = f.Latitude,
                     Longitude = f.Longitude,
                     BatteryPower = 13,

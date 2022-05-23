@@ -7,7 +7,7 @@ namespace Entities.Context
     {
         public ImitatorContext(DbContextOptions<ImitatorContext> options) : base(options)
         {
-           //Database.Migrate();
+           Database.Migrate();
         }
         
         public DbSet<Owner> Owners { get; set; }

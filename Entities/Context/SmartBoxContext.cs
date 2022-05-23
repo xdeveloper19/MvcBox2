@@ -8,7 +8,7 @@ namespace Entities.Context
     {
         public SmartBoxContext(DbContextOptions<SmartBoxContext> options) : base(options)
         {
-           // Database.Migrate();
+           Database.Migrate();
         }
 
         #region Obsolete
