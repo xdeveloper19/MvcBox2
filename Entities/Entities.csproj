@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191018124658_InitialUser.cs" />
+    <Compile Remove="Migrations\20191018124658_InitialUser.Designer.cs" />
     <Compile Remove="Migrations\Imitator\20210528104557_OriginalImitator.cs" />
     <Compile Remove="Migrations\Imitator\20210528104557_OriginalImitator.Designer.cs" />
     <Compile Remove="Migrations\Imitator\20210528111029_OriginalImitator.cs" />

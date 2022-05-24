@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Entities.Migrations.SmartBox
+namespace Entities.Migrations
 {
     [DbContext(typeof(SmartBoxContext))]
-    [Migration("20220420210248_DB_Refactored")]
-    partial class DB_Refactored
+    [Migration("20220424225939_AddAlarmNumber")]
+    partial class AddAlarmNumber
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,9 @@ namespace Entities.Migrations.SmartBox
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReleasedAt")
                         .HasColumnType("datetime2");
@@ -305,10 +308,10 @@ namespace Entities.Migrations.SmartBox
                     b.Property<Guid>("BoxId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BoxId", "UserId");
+                    b.HasKey("BoxId", "OwnerId");
 
                     b.ToTable("UserHasAccesses");
                 });

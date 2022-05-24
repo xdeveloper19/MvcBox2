@@ -1,5 +1,6 @@
 ﻿using Entities.Context;
 using Entities.Models;
+using Entities.Repository.DefaultData;
 using Entities.ViewModels;
 using Entities.ViewModels.ContainerViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,8 @@ namespace Entities.Repository
             var result = await _boxContext.SmartBoxes.AddAsync(box);
             _boxContext.SaveChanges();
 
+            SeedData.InitializeSensors(_boxContext, box.Id);
+
             DataContent.Status = ResponseResult.OK;
             DataContent.Message = "Объект успешно добавлен!";
             DataContent.ResponseData = new ContainerResponse
@@ -69,6 +72,231 @@ namespace Entities.Repository
             };
             return DataContent;
         }
+        
+        /// <summary>
+        /// Вызов тревоги
+        /// </summary>
+        /// <param name="IMEI"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public async Task<AlarmResponse> RaiseAlarm(string IMEI, string option)
+        {
+            int alarmNumber = int.Parse(option);
+            var boxId = getBoxId(IMEI);
+            var alarm = await _boxContext.Alarms.Where(s => s.Number == alarmNumber && s.BoxId == boxId && s.Active == true).FirstOrDefaultAsync();
+
+            if (alarm != null)
+            {
+                var response = new AlarmResponse
+                {
+                    Message = "Тревога уже вызвана."
+                };
+
+                return response;
+            }
+
+            _boxContext.Alarms.Add(new Alarm
+            {
+                Number = alarmNumber,
+                Active = true,
+                Message = AlarmDefaultData.Messages[alarmNumber],
+                AlarmTypeId = AlarmDefaultData.TypeId[alarmNumber],
+                BoxId = boxId,
+                Acknowledge = true,
+                AcknowledgedAt = DateTime.Now
+            });
+
+            await _boxContext.SaveChangesAsync();
+            var data = new AlarmResponse
+            {
+                Message = "Новая тревога успешно добавлена."
+            };
+
+            return data;
+        }
+
+        /// <summary>
+        /// Отмена тревоги
+        /// </summary>
+        /// <param name="IMEI"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public async Task<AlarmResponse> ReleaseAlarm(string IMEI, string option)
+        {
+            int alarmNumber = int.Parse(option);
+            var boxId = getBoxId(IMEI);
+            var alarm = await _boxContext.Alarms.Where(s => s.Number == alarmNumber && s.BoxId == boxId && s.Active == true).FirstOrDefaultAsync();
+
+            if (alarm == null)
+            {
+                var response = new AlarmResponse
+                {
+                    Message = "Тревога не была вызвана."
+                };
+
+                return response;
+            }
+
+            alarm.Active = false;
+            alarm.ReleasedAt = DateTime.Now;
+            _boxContext.Update(alarm);
+            await _boxContext.SaveChangesAsync();
+
+            var result = new AlarmResponse
+            {
+                Message = "Тревога успешно отменена."
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// Логгирование объекта по GPS
+        /// </summary>
+        /// <param name="model.Id"></param>
+        /// <param name="model.Lon1"></param>
+        /// <param name="model.Lat1"></param>
+        /// <param name="model.Date"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<BaseResponseObject>> SetContainerLocation(LocationViewModel model)
+        {
+            SmartBox box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Id == model.Id);
+            ServiceResponseObject<BaseResponseObject> DataContent = new ServiceResponseObject<BaseResponseObject>();
+
+
+            if (box != null)
+            {
+                Location location = new Location
+                {
+                    BoxId = box.Id,
+                    Latitude = model.Lat1,
+                    Longitude = model.Lon1,
+                    CurrentDate = model.Date
+                };
+
+                _boxContext.Locations.Add(location);
+                await _boxContext.SaveChangesAsync();
+                DataContent.Message = "Успешно!";
+                DataContent.Status = ResponseResult.OK;
+                return DataContent;
+            }
+
+            DataContent.Message = "Контейнер не найден!";
+            DataContent.Status = ResponseResult.Error;
+            return DataContent;
+        }
+
+        /// <summary>
+        /// Получение данных контейнера
+        /// </summary>
+        /// <param name="IMEI">IMEI контейнера</param>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI)
+        {
+            ServiceResponseObject<ListResponse<BoxDataResponse>> ContentData = new ServiceResponseObject<ListResponse<BoxDataResponse>>();
+            var box = await _boxContext.SmartBoxes.Where(s => s.Name == IMEI).FirstOrDefaultAsync();
+
+            if (box != null)
+            {
+
+                _boxContext.Entry(box)
+            .Collection(c => c.Sensors)
+            .Load();
+
+                ContentData.ResponseData = new ListResponse<BoxDataResponse>();
+
+                foreach (var sensor in box.Sensors)
+                {
+                    _boxContext.Entry(sensor)
+                        .Collection(c => c.SensorDatas)
+                        .Load();
+
+                    if (sensor.SensorDatas != null && sensor.SensorDatas.Count != 0)
+                    {
+                        var data = sensor.SensorDatas.OrderBy(p => p.CreatedAt).Select(s => new BoxDataResponse
+                        {
+                            CreatedAt = s.CreatedAt,
+                            SensorName = s.SensorName,
+                            Value = s.Value
+                        }).LastOrDefault();
+
+                        ContentData.ResponseData.Objects.Add(data);
+                    }
+                }
+
+                ContentData.Message = "Данные успешно получены.";
+                ContentData.Status = ResponseResult.OK;
+                return ContentData;
+            }
+            else
+            {
+                ContentData.Message = "Ошибка, нет данных.";
+                ContentData.Status = ResponseResult.Error;
+                return ContentData;
+            }
+        }
+
+        /// <summary>
+        /// Редактирование данных объекта
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponseObject<BaseResponseObject>> EditSensors(EditBoxViewModel model)
+        {
+            ServiceResponseObject<BaseResponseObject> ContentData = new ServiceResponseObject<BaseResponseObject>();
+            if (model == null)
+            {
+                ContentData.Message = "Не указаны данные для контейнера.";
+                ContentData.Status = ResponseResult.Error;
+                return ContentData;
+            }
+            var box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Name == model.Id);
+            //var team = await _teamContext.Teams.FirstOrDefaultAsync(f => f.Id == user.TeamId);
+
+            if (box == null)
+            {
+                ContentData.Message = "Контейнер не найден.";
+                ContentData.Status = ResponseResult.Error;
+                return ContentData;
+            }
+
+            _boxContext.Entry(box)
+                        .Collection(c => c.Sensors)
+                        .Load();
+
+            var date = DateTime.Now;
+
+            foreach (var sensor in box.Sensors)
+            {
+                _boxContext.Entry(sensor)
+                       .Collection(c => c.SensorDatas)
+                       .Load();
+
+                _boxContext.SensorDatas.Add(new SensorData
+                {
+                    CreatedAt = date,
+                    SensorId = sensor.Id,
+                    SensorName = sensor.Name,
+                    Value = model.Sensors.Where(f => f.Key == sensor.Name).Select(s => s.Value).FirstOrDefault()
+                }) ;
+
+                await _boxContext.SaveChangesAsync();
+            }
+
+            _boxContext.Update(box);
+            await _boxContext.SaveChangesAsync();
+            ContentData.Message = "Успешно.";
+            ContentData.Status = ResponseResult.OK;
+            return ContentData;
+        }
+
+        private Guid getBoxId(string IMEI)
+        {
+            var box = _boxContext.SmartBoxes.Where(s => s.Name == IMEI).FirstOrDefault();
+            return box.Id;
+        }
+
+        #region Obsolete
 
         /// <summary>
         /// Поиск записи в БД о наличии запроса на фото
@@ -144,8 +372,6 @@ namespace Entities.Repository
                 return DataContent;
             }
         }
-
-
 
         /// <summary>
         /// Тестирование контроллеров.
@@ -224,8 +450,8 @@ namespace Entities.Repository
                     + "&sensors[Уровень заряда аккумулятора]=" + o_data.status.Sensors["Уровень заряда аккумулятора"] + "&sensors[Уровень сигнала]=" + o_data.status.Sensors["Уровень сигнала"] + "&sensors[Состояние дверей]=" + o_data.status.Sensors["Состояние дверей"]
                     + "&sensors[Состояние контейнера]=" + o_data.status.Sensors["Состояние контейнера"] + "&sensors[Местоположение контейнера]=" + o_data.status.Sensors["Местоположение контейнера"]);
 
-                    
-                   // var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors");
+
+                    // var uri3 = new Uri("http://smartboxcity.ru:8003/imitator/sensors");
                     HttpResponseMessage responseFromAnotherServer = await myHttpClient.PostAsync(uri3.ToString(), new StringContent(JsonConvert.SerializeObject(ForAnotherServer), Encoding.UTF8, "application/json"));
 
                     string s_result_from_server;
@@ -248,7 +474,7 @@ namespace Entities.Repository
                     ContentData.Status = ResponseResult.Error;
                     return ContentData;
                 }
-              
+
                 ErrorResponse error = new ErrorResponse();
                 error = JsonConvert.DeserializeObject<ErrorResponse>(s_result);
 
@@ -289,145 +515,6 @@ namespace Entities.Repository
                 Name = Item.Name
             };
             return DataContent;
-        }
-
-        /// <summary>
-        /// Логгирование объекта по GPS
-        /// </summary>
-        /// <param name="model.Id"></param>
-        /// <param name="model.Lon1"></param>
-        /// <param name="model.Lat1"></param>
-        /// <param name="model.Date"></param>
-        /// <returns></returns>
-        public async Task<ServiceResponseObject<BaseResponseObject>> SetContainerLocation(LocationViewModel model)
-        {
-            SmartBox box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Id == model.Id);
-            ServiceResponseObject<BaseResponseObject> DataContent = new ServiceResponseObject<BaseResponseObject>();
-
-
-            if (box != null)
-            {
-                Location location = new Location
-                {
-                    BoxId = box.Id,
-                    Latitude = model.Lat1,
-                    Longitude = model.Lon1,
-                    CurrentDate = model.Date,
-                    Name = box.Name
-                };
-
-                _boxContext.Locations.Add(location);
-                await _boxContext.SaveChangesAsync();
-                DataContent.Message = "Успешно!";
-                DataContent.Status = ResponseResult.OK;
-                return DataContent;
-            }
-
-            DataContent.Message = "Контейнер не найден!";
-            DataContent.Status = ResponseResult.Error;
-            return DataContent;
-        }
-
-        /// <summary>
-        /// Получение данных контейнера
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(Guid id)
-        {
-            ServiceResponseObject<ListResponse<BoxDataResponse>> ContentData = new ServiceResponseObject<ListResponse<BoxDataResponse>>();
-            var box = await _boxContext.SmartBoxes.FindAsync(id);
-
-            if (box != null)
-            {
-
-                _boxContext.Entry(box)
-            .Collection(c => c.Sensors)
-            .Load();
-
-                ContentData.ResponseData = new ListResponse<BoxDataResponse>();
-
-                foreach (var sensor in box.Sensors)
-                {
-                    _boxContext.Entry(sensor)
-                        .Collection(c => c.SensorDatas)
-                        .Load();
-
-                    if (sensor.SensorDatas != null && sensor.SensorDatas.Count != 0)
-                    {
-                        var data = sensor.SensorDatas.OrderBy(p => p.CreatedAt).Select(s => new BoxDataResponse
-                        {
-                            CreatedAt = s.CreatedAt,
-                            SensorName = s.SensorName,
-                            Value = s.Value
-                        }).LastOrDefault();
-
-                        ContentData.ResponseData.Objects.Add(data);
-                    }
-                }
-
-                ContentData.Message = "Данные успешно получены.";
-                ContentData.Status = ResponseResult.OK;
-                return ContentData;
-            }
-            else
-            {
-                ContentData.Message = "Ошибка, нет данных.";
-                ContentData.Status = ResponseResult.Error;
-                return ContentData;
-            }
-        }
-
-        /// <summary>
-        /// Редактирование данных объекта
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<ServiceResponseObject<BaseResponseObject>> EditSensors(EditBoxViewModel model)
-        {
-            ServiceResponseObject<BaseResponseObject> ContentData = new ServiceResponseObject<BaseResponseObject>();
-            if (model == null)
-            {
-                ContentData.Message = "Не указаны данные для контейнера.";
-                ContentData.Status = ResponseResult.Error;
-                return ContentData;
-            }
-            var box = await _boxContext.SmartBoxes.FirstOrDefaultAsync(s => s.Id == model.Id);
-            //var team = await _teamContext.Teams.FirstOrDefaultAsync(f => f.Id == user.TeamId);
-
-            if (box == null)
-            {
-                ContentData.Message = "Контейнер не найден.";
-                ContentData.Status = ResponseResult.Error;
-                return ContentData;
-            }
-
-            _boxContext.Entry(box)
-                        .Collection(c => c.Sensors)
-                        .Load();
-
-            foreach (var sensor in box.Sensors)
-            {
-                _boxContext.Entry(sensor)
-                       .Collection(c => c.SensorDatas)
-                       .Load();
-
-                _boxContext.SensorDatas.Add(new SensorData
-                {
-                    CreatedAt = model.Date,
-                    SensorId = sensor.Id,
-                    SensorName = sensor.Name,
-                    Value = model.Sensors.Where(f => f.Key == sensor.Name).Select(s => s.Value).FirstOrDefault()
-                }) ;
-
-                await _boxContext.SaveChangesAsync();
-            }
-
-            _boxContext.Update(box);
-            await _boxContext.SaveChangesAsync();
-            ContentData.Message = "Успешно.";
-            ContentData.Status = ResponseResult.OK;
-            return ContentData;
         }
 
         /// <summary>
@@ -525,15 +612,14 @@ namespace Entities.Repository
             .Load();
 
                 //var sendors = GetBox(box.Id);
-                
+
                 if (box.Locations == null || box.Locations.Count == 0)
                     continue;
-                
+
                 // Получить последние координаты с объекта
                 var lastItem = box.Locations.OrderBy(p => p.CurrentDate).Select(f => new BoxLocation
                 {
                     SmartBoxId = f.BoxId,
-                    Name = f.Name,
                     Latitude = f.Latitude,
                     Longitude = f.Longitude,
                     BatteryPower = 13,
@@ -563,6 +649,8 @@ namespace Entities.Repository
             ContentData.Status = ResponseResult.OK;
             return ContentData;
         }
+
+        #endregion
 
     }
 }

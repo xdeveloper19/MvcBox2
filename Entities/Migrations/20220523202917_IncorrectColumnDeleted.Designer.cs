@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Entities.Migrations.SmartBox
+namespace Entities.Migrations
 {
     [DbContext(typeof(SmartBoxContext))]
-    [Migration("20220420210707_Add_UserForeignKey")]
-    partial class Add_UserForeignKey
+    [Migration("20220523202917_IncorrectColumnDeleted")]
+    partial class IncorrectColumnDeleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,9 @@ namespace Entities.Migrations.SmartBox
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReleasedAt")
                         .HasColumnType("datetime2");
@@ -134,9 +137,6 @@ namespace Entities.Migrations.SmartBox
 
                     b.Property<double?>("Longitude")
                         .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -292,9 +292,6 @@ namespace Entities.Migrations.SmartBox
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("SmartBoxes");
@@ -305,10 +302,10 @@ namespace Entities.Migrations.SmartBox
                     b.Property<Guid>("BoxId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BoxId", "UserId");
+                    b.HasKey("BoxId", "OwnerId");
 
                     b.ToTable("UserHasAccesses");
                 });

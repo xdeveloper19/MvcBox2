@@ -1,5 +1,6 @@
 ﻿using Entities.Context;
 using Entities.Models;
+using Entities.Repository.DefaultData;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,33 @@ namespace Entities.Repository
                        );
                 context.SaveChanges();
             }
+        }
+
+        public static void InitializeAlarmTypes(SmartBoxContext context)
+        {
+            if (context.AlarmTypes.Any())
+                return;
+
+            context.AlarmTypes.AddRange(new List<AlarmType>
+            {
+                new AlarmType
+                {
+                    Id = AlarmDefaultData.TypeId[3],
+                    Name = "Химическая тревога"
+                },
+                new AlarmType
+                {
+                    Id = AlarmDefaultData.TypeId[1],
+                    Name = "Физическая тревога"
+                },
+                new AlarmType
+                {
+                    Id = AlarmDefaultData.TypeId[2],
+                    Name = "Несанционированный доступ"
+                }
+            });
+
+            context.SaveChanges();
         }
 
         public static void InitializeSensors(SmartBoxContext context, Guid boxId)

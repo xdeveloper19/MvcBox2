@@ -8,7 +8,7 @@ namespace Entities.ViewModels.ContainerViewModels
 {
     public class EditBoxViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         //public string Weight { get; set; }
         //public string Light { get; set; }
         //public string Temperature { get; set; }

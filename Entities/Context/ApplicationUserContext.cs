@@ -9,7 +9,7 @@ namespace Entities.Context
     {
         public ApplicationUserContext(DbContextOptions<ApplicationUserContext> options) : base(options)
         {
-           Database.Migrate();
+           //Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

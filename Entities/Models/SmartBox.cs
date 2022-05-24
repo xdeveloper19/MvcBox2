@@ -50,7 +50,6 @@ namespace Entities.Models
         //public double BatteryPower { get; set; }
         //[MaxLength(45)]
         public string CloudKey { get; set; }
-        public string OwnerId { get; set; }
         public ICollection<Sensor> Sensors { get; set; }
         public ICollection<Media> Media { get; set; }
         public ICollection<Alarm> Alarms { get; set; }

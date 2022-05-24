@@ -41,7 +41,7 @@ namespace MvcBox.Services
                 var mappedEntity = await _devRepository.CreateDevice(model, owId);
                 _logger.LogInformation($"Entity successfully added - BaseProject");
                 var newMappedEntity = ObjectMapper.Mapper.Map<DeviceModel>(mappedEntity);
-                newMappedEntity.SuccessInfo = "Мобильное устройство успешно зарегестрировано.";
+                newMappedEntity.SuccessInfo = "Мобильное устройство успешно зарегистрировано.";
                 return newMappedEntity;
             }
             catch (Exception exp)
@@ -77,6 +77,11 @@ namespace MvcBox.Services
             }
         }
 
+        /// <summary>
+        /// Добавить запрос на получение фото
+        /// </summary>
+        /// <param name="IMEI"></param>
+        /// <returns></returns>
         public async Task UpdatePhotoRequest(string IMEI)
         {
             try

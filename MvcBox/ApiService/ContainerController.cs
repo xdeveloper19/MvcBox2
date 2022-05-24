@@ -4,6 +4,7 @@ using Entities.Repository;
 using Entities.ViewModels;
 using Entities.ViewModels.ContainerViewModels;
 using Entities.ViewModels.OrderViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MvcBox.Services.Interfaces;
@@ -36,24 +37,13 @@ namespace MvcBox.ApiService
         /// <returns>Успех или нет</returns>
         [HttpPost]
         [Route("Create")]
+        [Authorize]
         public async Task<ServiceResponseObject<ContainerResponse>> Create(string name)
         {
+            //await _devService.UpdatePhotoRequest(name);
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
             var Result = await BoxData.Create(name);
-
-            try
-            {
-                await _devService.UpdatePhotoRequest(name);
-                Result.Message = "Успешно.";
-                Result.Status = ResponseResult.OK;
-                return Result;
-            }
-            catch (Exception ex)
-            {
-                Result.Message = ex.Message;
-                Result.Status = ResponseResult.Error;
-                return Result;
-            }
+            return Result;
         }
 
         [HttpGet]
@@ -65,20 +55,52 @@ namespace MvcBox.ApiService
             return Result;
         }
 
+        [HttpGet]
+        [Route("RaiseAlarm")]
+        [Authorize]
+        public async Task<IActionResult> RaiseAlarm(string IMEI, string option)
+        {
+            try
+            {
+                ContainerMethods boxData = new ContainerMethods(_boxContext);
+                var response = await boxData.RaiseAlarm(IMEI, option);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AlarmResponse() { Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("ReleaseAlarm")]
+        [Authorize]
+        public async Task<IActionResult> ReleaseAlarm(string IMEI, string option)
+        {
+            try
+            {
+                ContainerMethods boxData = new ContainerMethods(_boxContext);
+                var response = await boxData.ReleaseAlarm(IMEI, option);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new AlarmResponse() { Message = ex.Message });
+            }
+        }
 
         [HttpPost]
         [Route("EditSensors")]
+        [Authorize]
         public async Task<ServiceResponseObject<BaseResponseObject>> EditSensors(EditBoxViewModel model)
         {
+            #region Obsolete
             //if (ModelState.IsValid)
             //{
             //    ContainerMethods BoxData = new ContainerMethods(_boxContext);
             //    var Result = await BoxData.EditSensors(model);
             //    return Result;
             //}
-            ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.EditSensors(model);
-            return Result;
             //ServiceResponseObject<BaseResponseObject> response = new ServiceResponseObject<BaseResponseObject>();
             //response.Status = ResponseResult.Error;
 
@@ -94,6 +116,10 @@ namespace MvcBox.ApiService
 
             //response.Message = errors[0];
             //return response;
+            #endregion
+            ContainerMethods BoxData = new ContainerMethods(_boxContext);
+            var Result = await BoxData.EditSensors(model);
+            return Result;
         }
 
         [HttpPost]
@@ -124,12 +150,21 @@ namespace MvcBox.ApiService
             return response;
         }
 
+        /// <summary>
+        /// Возвращает последние показания датчиков
+        /// </summary>
+        /// <param name="IMEI">IMEI контейнера</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetBox")]
-        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(Guid id) /*Guid driverId, Guid orderId*/
+        [Authorize]
+        public async Task<ServiceResponseObject<ListResponse<BoxDataResponse>>> GetBox(string IMEI)
         {
             ContainerMethods BoxData = new ContainerMethods(_boxContext);
-            var Result = await BoxData.GetBox(id);
+            var Result = await BoxData.GetBox(IMEI);
+            return Result;
+
+            #region Obsolete
             //if (Result.Status == ResponseResult.OK)
             //{
             //    if (SearchDriver(driverId))
@@ -152,7 +187,7 @@ namespace MvcBox.ApiService
             //        Result.Message += " Контейнер привязан.";
             //    }
             //}
-            return Result;
+            #endregion
         }
 
         #region Obsolete

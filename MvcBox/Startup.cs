@@ -264,7 +264,7 @@ namespace MvcBox
 
             var context = services.GetRequiredService<SmartBoxContext>();
             SeedData.InitializeTestContainer(context, keys);
-            CreateUserRoles(services).Wait();
+            //CreateUserRoles(services).Wait();
         }
     }
 }

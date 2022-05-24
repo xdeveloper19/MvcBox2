@@ -4,14 +4,16 @@ using Entities.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Entities.Migrations.SmartBox
+namespace Entities.Migrations
 {
     [DbContext(typeof(SmartBoxContext))]
-    partial class SmartBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20220422145425_AddOwnerForeignKey")]
+    partial class AddOwnerForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,10 +305,10 @@ namespace Entities.Migrations.SmartBox
                     b.Property<Guid>("BoxId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BoxId", "UserId");
+                    b.HasKey("BoxId", "OwnerId");
 
                     b.ToTable("UserHasAccesses");
                 });

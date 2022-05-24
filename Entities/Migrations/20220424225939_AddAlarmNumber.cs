@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Entities.Migrations.SmartBox
+namespace Entities.Migrations
 {
-    public partial class BoxState : Migration
+    public partial class AddAlarmNumber : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "BoxState",
-                table: "SmartBoxes",
+                name: "Number",
+                table: "Alarms",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -16,8 +16,8 @@ namespace Entities.Migrations.SmartBox
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BoxState",
-                table: "SmartBoxes");
+                name: "Number",
+                table: "Alarms");
         }
     }
 }

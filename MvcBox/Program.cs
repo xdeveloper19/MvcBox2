@@ -31,6 +31,7 @@ namespace MvcBox
                     context.Database.Migrate();
                     //SeedData.InitializeOrderStages(services);
                     SeedData.InitializeSensorType(services);
+                    SeedData.InitializeAlarmTypes(context);
                     //SeedData.InitializeTestContainer(services, IMEI);
                 }
                 catch (Exception ex)
