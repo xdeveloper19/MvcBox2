@@ -8,7 +8,7 @@
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>ftp://iot-tmc-cen.1gb.ru/http</_PublishTargetUrl>
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAgaKH01vfMEq0ekBBUruQvwAAAAACAAAAAAAQZgAAAAEAACAAAAAxDINbtBzxSqE+JH/eXfhFCsATZXwZSjR98Ob6QEFekAAAAAAOgAAAAAIAACAAAAAnnbF4UxZter6fpcdw3qqSZqmKJnxgtiDoSPDReczApiAAAADXjAj+naheKKFG+Om1ytbylJWXwLSR5RpN7DRlwvbxCUAAAACHlR0JdnvBs7kQo7aK1yqzwTj21sq9XTszi3L0qMyz4269tpeyrMcykEoRmCLKknOIapll92ZhmVpd9tvPBP1h</EncryptedPassword>
-    <History>True|2022-04-25T00:55:01.4597607Z;</History>
+    <History>True|2022-05-23T21:36:52.0392461Z;True|2022-04-25T03:55:01.4597607+03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="appsettings.Development.json">
@@ -54,10 +54,10 @@
       <publishTime>09/21/2019 01:26:20</publishTime>
     </File>
     <File Include="Entities.dll">
-      <publishTime>04/25/2022 03:33:19</publishTime>
+      <publishTime>05/23/2022 23:51:49</publishTime>
     </File>
     <File Include="Entities.pdb">
-      <publishTime>04/25/2022 03:33:19</publishTime>
+      <publishTime>05/23/2022 23:51:49</publishTime>
     </File>
     <File Include="es/Microsoft.CodeAnalysis.CSharp.resources.dll">
       <publishTime>08/15/2019 02:21:24</publishTime>
@@ -201,31 +201,31 @@
       <publishTime>11/15/2019 11:36:56</publishTime>
     </File>
     <File Include="MvcBox.deps.json">
-      <publishTime>04/25/2022 03:33:35</publishTime>
+      <publishTime>05/23/2022 23:52:07</publishTime>
     </File>
     <File Include="MvcBox.dll">
-      <publishTime>04/25/2022 03:33:21</publishTime>
+      <publishTime>05/23/2022 23:51:50</publishTime>
     </File>
     <File Include="MvcBox.exe">
-      <publishTime>04/25/2022 03:33:21</publishTime>
+      <publishTime>05/23/2022 23:51:50</publishTime>
     </File>
     <File Include="MvcBox.pdb">
-      <publishTime>04/25/2022 03:33:21</publishTime>
+      <publishTime>05/23/2022 23:51:50</publishTime>
     </File>
     <File Include="MvcBox.runtimeconfig.json">
       <publishTime>04/25/2022 03:33:23</publishTime>
     </File>
     <File Include="MvcBox.Services.dll">
-      <publishTime>04/25/2022 03:33:20</publishTime>
+      <publishTime>05/23/2022 23:51:49</publishTime>
     </File>
     <File Include="MvcBox.Services.pdb">
-      <publishTime>04/25/2022 03:33:20</publishTime>
+      <publishTime>05/23/2022 23:51:49</publishTime>
     </File>
     <File Include="MvcBox.Views.dll">
-      <publishTime>04/25/2022 03:33:22</publishTime>
+      <publishTime>05/23/2022 23:51:52</publishTime>
     </File>
     <File Include="MvcBox.Views.pdb">
-      <publishTime>04/25/2022 03:33:22</publishTime>
+      <publishTime>05/23/2022 23:51:52</publishTime>
     </File>
     <File Include="Newtonsoft.Json.dll">
       <publishTime>11/09/2019 03:56:44</publishTime>
@@ -375,7 +375,7 @@
       <publishTime>08/15/2019 02:20:54</publishTime>
     </File>
     <File Include="web.config">
-      <publishTime>04/25/2022 03:33:35</publishTime>
+      <publishTime>05/23/2022 23:52:08</publishTime>
     </File>
     <File Include="wwwroot/Auth.html">
       <publishTime>04/12/2022 10:15:45</publishTime>
